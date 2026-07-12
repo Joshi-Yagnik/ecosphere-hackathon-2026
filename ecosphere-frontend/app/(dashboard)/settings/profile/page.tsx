@@ -44,7 +44,7 @@ export default function ProfilePage() {
             </div>
             <h3 className="font-bold text-slate-900 text-lg">{profile.name}</h3>
             <p className="text-sm text-slate-500 mb-4">{profile.role}</p>
-            <button className="eco-btn-secondary text-xs w-full justify-center">Upload Photo</button>
+            <button onClick={() => alert('Uploading photo...')} className="eco-btn-secondary text-xs w-full justify-center">Upload Photo</button>
           </div>
         </div>
 
@@ -116,7 +116,7 @@ export default function ProfilePage() {
               <Key className="w-5 h-5" /> Security
             </h3>
             <p className="text-sm text-slate-500 mb-4">Manage your password and authentication methods.</p>
-            <button className="eco-btn-secondary text-sm border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300">
+            <button onClick={() => alert('Account deletion requested.')} className="eco-btn-secondary text-sm border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300">
               Change Password
             </button>
           </div>

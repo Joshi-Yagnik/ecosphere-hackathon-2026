@@ -162,7 +162,7 @@ function NotificationPanel({
                   </span>
                 )}
               </div>
-              <button className="text-xs text-green-600 font-medium hover:text-green-700">
+              <button onClick={() => alert('Viewing all items...')} className="text-xs text-green-600 font-medium hover:text-green-700">
                 Mark all read
               </button>
             </div>
@@ -203,7 +203,7 @@ function NotificationPanel({
 
             {/* Footer */}
             <div className="px-4 py-2.5 border-t border-slate-100 text-center">
-              <button className="text-xs text-green-600 font-medium hover:text-green-700">
+              <button onClick={() => alert('Viewing all notifications...')} className="text-xs text-green-600 font-medium hover:text-green-700">
                 View all notifications
               </button>
             </div>
@@ -266,7 +266,7 @@ function UserDropdown({
 
             {/* Logout */}
             <div className="border-t border-slate-100 py-1">
-              <button className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+              <button onClick={() => window.location.href = '/login'} className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
                 <LogOut className="w-3.5 h-3.5" />
                 Sign out
               </button>

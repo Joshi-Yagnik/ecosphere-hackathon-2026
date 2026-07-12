@@ -243,10 +243,10 @@ export default function EmissionFactorsPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
+          <button onClick={() => alert('Downloading template...')} className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
             <Upload className="w-3.5 h-3.5" /> Import
           </button>
-          <button className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
+          <button onClick={() => alert('Uploading factors...')} className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
             <Download className="w-3.5 h-3.5" /> Export CSV
           </button>
           <button onClick={openCreate} className="eco-btn-primary text-xs px-3 py-2 gap-1.5">

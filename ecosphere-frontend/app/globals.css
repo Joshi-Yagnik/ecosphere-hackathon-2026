@@ -309,3 +309,52 @@ nav::-webkit-scrollbar       { width: 4px; }
 nav::-webkit-scrollbar-track { background: transparent; }
 nav::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 2px; }
 nav::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+
+/* ── Dark Mode Overrides for Hardcoded Utility Classes ──────── */
+.dark .bg-white { background-color: var(--bg-card) !important; }
+.dark .bg-slate-50 { background-color: #0f172a !important; }
+.dark .bg-slate-100 { background-color: #1e293b !important; }
+.dark .text-slate-900 { color: var(--text-primary) !important; }
+.dark .text-slate-800 { color: #e2e8f0 !important; }
+.dark .text-slate-700 { color: #cbd5e1 !important; }
+.dark .text-slate-600 { color: var(--text-secondary) !important; }
+.dark .text-slate-500 { color: var(--text-muted) !important; }
+.dark .text-slate-400 { color: #475569 !important; }
+.dark .border-slate-100 { border-color: var(--border) !important; }
+.dark .border-slate-200 { border-color: var(--border) !important; }
+.dark .border-slate-300 { border-color: #475569 !important; }
+
+.dark .eco-card, .dark .eco-card-hover, .dark .eco-stat-card {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+
+.dark .eco-page-title, .dark .eco-section-title {
+  color: var(--text-primary) !important;
+}
+
+.dark .eco-page-subtitle {
+  color: var(--text-secondary) !important;
+}
+
+.dark .eco-btn-secondary {
+  background-color: transparent !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+.dark .eco-btn-secondary:hover {
+  background-color: #334155 !important;
+}
+.dark .eco-btn-ghost {
+  color: var(--text-secondary) !important;
+}
+.dark .eco-btn-ghost:hover {
+  background-color: #334155 !important;
+  color: var(--text-primary) !important;
+}
+
+/* Modals */
+.dark [role="dialog"] {
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+}

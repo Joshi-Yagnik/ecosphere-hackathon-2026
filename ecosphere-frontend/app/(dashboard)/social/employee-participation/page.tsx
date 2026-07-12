@@ -170,7 +170,7 @@ export default function EmployeeParticipationPage() {
           <p className="eco-page-subtitle">Track individual employee contributions to CSR and sustainability initiatives.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
+          <button onClick={() => alert('Exporting participation records...')} className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
             <Download className="w-3.5 h-3.5" /> Export Log
           </button>
         </div>

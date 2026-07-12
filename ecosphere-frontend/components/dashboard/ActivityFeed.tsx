@@ -49,7 +49,7 @@ export function ActivityFeed() {
           </h3>
           <p className="text-xs text-slate-400 mt-0.5">Last 7 days</p>
         </div>
-        <button className="text-xs text-green-600 font-semibold hover:text-green-700 transition-colors">
+        <button onClick={() => alert('Viewing all activities...')} className="text-xs text-green-600 font-semibold hover:text-green-700 transition-colors">
           View all →
         </button>
       </div>
