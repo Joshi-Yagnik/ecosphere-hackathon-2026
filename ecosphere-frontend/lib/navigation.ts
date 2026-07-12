@@ -30,6 +30,7 @@ import {
   Bell,
 } from 'lucide-react';
 import type { NavItem } from '@/types';
+export type { NavItem };
 
 export const navigationItems: NavItem[] = [
   {

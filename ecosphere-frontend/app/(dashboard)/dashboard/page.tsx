@@ -4,8 +4,10 @@
 // ============================================================
 // EcoSphere – Full Interactive Dashboard (Phase 2)
 // ============================================================
+
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+
 import {
   BarChart3,
   Leaf,
@@ -125,7 +127,53 @@ const kpiCards = [
     gradient: 'from-violet-500 to-purple-700',
     delay: 240,
   },
-] as const;
+
+];
+
+const stats = [
+  { label: 'Carbon Emissions', value: '1,284 tCO₂e', icon: Leaf, color: 'text-green-600', bg: 'bg-green-50' },
+  { label: 'CSR Activities', value: '47 this month', icon: Activity, color: 'text-blue-600', bg: 'bg-blue-50' },
+  { label: 'Open Compliance Issues', value: '3 critical', icon: AlertCircle, color: 'text-red-600', bg: 'bg-red-50' },
+  { label: 'Employee Participation', value: '89.3%', icon: Users, color: 'text-violet-600', bg: 'bg-violet-50' },
+  { label: 'Challenges Active', value: '12 running', icon: Zap, color: 'text-orange-600', bg: 'bg-orange-50' },
+  { label: 'Goals Achieved', value: '8 / 14', icon: CheckCircle2, color: 'text-teal-600', bg: 'bg-teal-50' },
+];
+
+const leaderboard = [
+  { rank: 1, name: 'Priya Sharma', dept: 'Engineering', xp: 4820, badge: '🏆' },
+  { rank: 2, name: 'Rahul Mehta', dept: 'Operations', xp: 4210, badge: '🥈' },
+  { rank: 3, name: 'Sneha Patel', dept: 'HR', xp: 3980, badge: '🥉' },
+  { rank: 4, name: 'Arun Kumar', dept: 'Finance', xp: 3560, badge: '' },
+  { rank: 5, name: 'Divya Nair', dept: 'Marketing', xp: 3120, badge: '' },
+];
+
+const recentActivities = [
+  { icon: '🌱', text: 'Carbon transaction logged by Operations dept', time: '5m ago', type: 'env' },
+  { icon: '🏅', text: 'Priya S. earned "Carbon Neutral Hero" badge', time: '1h ago', type: 'gamify' },
+  { icon: '📋', text: 'Q2 CSR Activity "Tree Plantation" approved', time: '3h ago', type: 'social' },
+  { icon: '⚠️', text: 'Compliance issue CI-2026-003 marked overdue', time: '5h ago', type: 'gov' },
+  { icon: '🎯', text: 'Environmental Goal EG-2026-0012 achieved', time: '1d ago', type: 'env' },
+  { icon: '🔖', text: 'Data Privacy Policy v2.1 published', time: '2d ago', type: 'gov' },
+];
+
+const departments = [
+  { name: 'Engineering', score: 82, color: 'bg-green-500' },
+  { name: 'HR', score: 78, color: 'bg-blue-500' },
+  { name: 'Operations', score: 71, color: 'bg-teal-500' },
+  { name: 'Finance', score: 65, color: 'bg-violet-500' },
+  { name: 'Marketing', score: 60, color: 'bg-orange-500' },
+];
+
+// ── Animation variants ────────────────────────────────────────
+const containerVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07 } },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' } },
+};
 
 // ── Page ──────────────────────────────────────────────────────
 export default function DashboardPage() {
