@@ -22,7 +22,10 @@ import {
 import { cn } from '@/lib/utils';
 import { useSidebar } from '@/hooks/useSidebar';
 import { Breadcrumb } from './Breadcrumb';
+<<<<<<< HEAD
 import { DarkModeToggle } from './DarkModeToggle';
+=======
+>>>>>>> origin/main
 
 // ── Mock notifications ────────────────────────────────────────
 const notifications = [
@@ -162,7 +165,11 @@ function NotificationPanel({
                   </span>
                 )}
               </div>
+<<<<<<< HEAD
               <button onClick={() => alert('Viewing all items...')} className="text-xs text-green-600 font-medium hover:text-green-700">
+=======
+              <button className="text-xs text-green-600 font-medium hover:text-green-700">
+>>>>>>> origin/main
                 Mark all read
               </button>
             </div>
@@ -203,7 +210,11 @@ function NotificationPanel({
 
             {/* Footer */}
             <div className="px-4 py-2.5 border-t border-slate-100 text-center">
+<<<<<<< HEAD
               <button onClick={() => alert('Viewing all notifications...')} className="text-xs text-green-600 font-medium hover:text-green-700">
+=======
+              <button className="text-xs text-green-600 font-medium hover:text-green-700">
+>>>>>>> origin/main
                 View all notifications
               </button>
             </div>
@@ -266,7 +277,11 @@ function UserDropdown({
 
             {/* Logout */}
             <div className="border-t border-slate-100 py-1">
+<<<<<<< HEAD
               <button onClick={() => window.location.href = '/login'} className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+=======
+              <button className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+>>>>>>> origin/main
                 <LogOut className="w-3.5 h-3.5" />
                 Sign out
               </button>
@@ -309,9 +324,12 @@ export function Navbar() {
         {/* Search */}
         <SearchBox />
 
+<<<<<<< HEAD
         {/* Dark Mode Toggle */}
         <DarkModeToggle />
 
+=======
+>>>>>>> origin/main
         {/* Notification Bell */}
         <div className="relative">
           <button

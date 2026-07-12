@@ -1,10 +1,13 @@
-// lib/supabase.ts
-// ============================================================
-// EcoSphere – Stub: Supabase is NOT used in this prototype.
-// The PDF spec requires mock authentication only.
-// All auth logic lives in lib/mock-auth.ts
-// ============================================================
+import { createClient } from '@supabase/supabase-js';
 
-// This file is kept as a stub to prevent import errors from
-// any legacy code that may reference it.
-export const supabase = null;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder-project.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key';
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: true,
+    // Do not use localStorage directly in your app code, rely on Supabase's secure session handling
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  }
+});
