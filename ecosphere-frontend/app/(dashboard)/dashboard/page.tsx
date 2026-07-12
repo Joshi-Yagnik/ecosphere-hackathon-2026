@@ -4,7 +4,7 @@
 // ============================================================
 // EcoSphere – Dashboard (Phase 2 placeholder)
 // ============================================================
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import {
   Leaf,
   Users,
@@ -107,12 +107,12 @@ const departments = [
 ];
 
 // ── Animation variants ────────────────────────────────────────
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.07 } },
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 16 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' } },
 };
