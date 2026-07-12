@@ -228,6 +228,184 @@ export const navigationItems: NavItem[] = [
   },
 ];
 
+export const managerNavigationItems: NavItem[] = [
+  {
+    id: 'manager-dashboard',
+    title: 'Dashboard',
+    href: '/manager/dashboard',
+    icon: LayoutDashboard,
+  },
+  {
+    id: 'manager-environmental',
+    title: 'Environmental',
+    icon: Leaf,
+    color: 'text-green-600',
+    children: [
+      {
+        id: 'manager-carbon-transactions',
+        title: 'Carbon Transactions',
+        href: '/manager/environmental/carbon-transactions',
+        icon: TrendingDown,
+      },
+      {
+        id: 'manager-environmental-goals',
+        title: 'Environmental Goals',
+        href: '/manager/environmental/goals',
+        icon: Target,
+      },
+    ],
+  },
+  {
+    id: 'manager-social',
+    title: 'Social',
+    icon: Users,
+    color: 'text-blue-600',
+    children: [
+      {
+        id: 'manager-csr-activities',
+        title: 'CSR Activities',
+        href: '/manager/social/csr-activities',
+        icon: Heart,
+      },
+      {
+        id: 'manager-employee-participation',
+        title: 'Employee Participation',
+        href: '/manager/social/employee-participation',
+        icon: UserCheck,
+      },
+    ],
+  },
+  {
+    id: 'manager-governance',
+    title: 'Governance',
+    icon: Shield,
+    color: 'text-violet-600',
+    children: [
+      {
+        id: 'manager-policies',
+        title: 'Policies',
+        href: '/manager/governance/policies',
+        icon: FileText,
+      },
+      {
+        id: 'manager-audits',
+        title: 'Audits',
+        href: '/manager/governance/audits',
+        icon: ClipboardList,
+      },
+    ],
+  },
+  {
+    id: 'manager-reports',
+    title: 'Reports',
+    href: '/manager/reports',
+    icon: FileBarChart,
+    color: 'text-slate-600',
+  },
+];
+
+export const employeeNavigationItems: NavItem[] = [
+  {
+    id: 'employee-dashboard',
+    title: 'Dashboard',
+    href: '/employee/dashboard',
+    icon: LayoutDashboard,
+  },
+  {
+    id: 'employee-environmental',
+    title: 'Environmental',
+    icon: Leaf,
+    color: 'text-green-600',
+    children: [
+      {
+        id: 'employee-carbon-activity',
+        title: 'My Carbon Activity',
+        href: '/employee/environmental/carbon-activity',
+        icon: TrendingDown,
+      },
+    ],
+  },
+  {
+    id: 'employee-social',
+    title: 'Social',
+    icon: Users,
+    color: 'text-blue-600',
+    children: [
+      {
+        id: 'employee-csr-activities',
+        title: 'CSR Activities',
+        href: '/employee/social/csr-activities',
+        icon: Heart,
+      },
+      {
+        id: 'employee-my-participation',
+        title: 'My Participation',
+        href: '/employee/social/my-participation',
+        icon: UserCheck,
+      },
+    ],
+  },
+  {
+    id: 'employee-governance',
+    title: 'Governance',
+    icon: Shield,
+    color: 'text-violet-600',
+    children: [
+      {
+        id: 'employee-policies',
+        title: 'Policies',
+        href: '/employee/governance/policies',
+        icon: FileText,
+      },
+      {
+        id: 'employee-policy-acknowledgements',
+        title: 'Policy Acknowledgements',
+        href: '/employee/governance/policy-acknowledgements',
+        icon: CheckSquare,
+      },
+    ],
+  },
+  {
+    id: 'employee-gamification',
+    title: 'Gamification',
+    icon: Trophy,
+    color: 'text-orange-600',
+    children: [
+      {
+        id: 'employee-challenges',
+        title: 'Challenges',
+        href: '/employee/gamification/challenges',
+        icon: Zap,
+      },
+      {
+        id: 'employee-badges',
+        title: 'My Badges',
+        href: '/employee/gamification/badges',
+        icon: Award,
+      },
+      {
+        id: 'employee-rewards',
+        title: 'Rewards',
+        href: '/employee/gamification/rewards',
+        icon: Gift,
+      },
+      {
+        id: 'employee-leaderboard',
+        title: 'Leaderboard',
+        href: '/employee/gamification/leaderboard',
+        icon: Medal,
+      },
+    ],
+  },
+  {
+    id: 'employee-reports',
+    title: 'Reports',
+    href: '/employee/reports',
+    icon: FileBarChart,
+    color: 'text-slate-600',
+  },
+];
+
 // ── Breadcrumb Label Map ──────────────────────────────────────
 // Maps URL segments → human-readable labels
 export const breadcrumbLabels: Record<string, string> = {

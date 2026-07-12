@@ -15,6 +15,7 @@ import {
 import { DataTable } from '@/components/ui/DataTable';
 import { Modal } from '@/components/ui/Modal';
 import { policies as initial } from '@/lib/mock-data/governance';
+import { mockGetSession } from '@/lib/mock-auth';
 import type { Policy, PolicyType } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -122,16 +123,20 @@ function buildColumns(
             <button onClick={() => onView(row.original)} title="View" className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
               <Eye className="w-3.5 h-3.5" />
             </button>
-            {state === 'draft' && (
-              <button onClick={() => onActivate(id)} title="Activate" className="p-1.5 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-              </button>
-            )}
-            {state === 'active' && (
-              <button onClick={() => onArchive(id)} title="Archive" className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
-                <Archive className="w-3.5 h-3.5" />
-              </button>
-            )}
+            {(!mockGetSession()?.user?.role || (mockGetSession()?.user?.role !== 'manager' && mockGetSession()?.user?.role !== 'employee')) ? (
+              <>
+                {state === 'draft' && (
+                  <button onClick={() => onActivate(id)} title="Activate" className="p-1.5 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                  </button>
+                )}
+                {state === 'active' && (
+                  <button onClick={() => onArchive(id)} title="Archive" className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
+                    <Archive className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </>
+            ) : null}
           </div>
         );
       },
@@ -141,6 +146,10 @@ function buildColumns(
 
 // ── Page ──────────────────────────────────────────────────────
 export default function PoliciesPage() {
+  const session = mockGetSession();
+  const isManager = session?.user?.role === 'manager';
+  const isEmployee = session?.user?.role === 'employee';
+
   const [data, setData] = useState<Policy[]>(initial);
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -193,9 +202,11 @@ export default function PoliciesPage() {
           </h1>
           <p className="eco-page-subtitle">Manage ESG and corporate governance policies across the organization.</p>
         </div>
-        <button onClick={() => setAddModalOpen(true)} className="eco-btn-primary bg-violet-600 hover:bg-violet-700 text-xs px-3 py-2 gap-1.5">
-          <Plus className="w-3.5 h-3.5" /> New Policy
-        </button>
+        {!(isManager || isEmployee) && (
+          <button onClick={() => setAddModalOpen(true)} className="eco-btn-primary text-xs px-3 py-2 gap-1.5">
+            <Plus className="w-3.5 h-3.5" /> Create Policy
+          </button>
+        )}
       </div>
 
       {/* Stats */}

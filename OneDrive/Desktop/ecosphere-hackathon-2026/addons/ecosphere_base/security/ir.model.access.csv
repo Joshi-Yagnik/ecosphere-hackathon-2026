@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_esg_department_employee,esg.department.employee,model_esg_department,group_esg_employee,1,0,0,0
-access_esg_department_head,esg.department.head,model_esg_department,group_esg_dept_head,1,1,0,0
-access_esg_department_manager,esg.department.manager,model_esg_department,group_esg_manager,1,1,1,1

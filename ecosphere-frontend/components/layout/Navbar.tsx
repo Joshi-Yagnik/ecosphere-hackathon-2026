@@ -7,6 +7,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { mockGetSession } from '@/lib/mock-auth';
 import {
   Menu,
   Search,
@@ -22,10 +23,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useSidebar } from '@/hooks/useSidebar';
 import { Breadcrumb } from './Breadcrumb';
-<<<<<<< HEAD
 import { DarkModeToggle } from './DarkModeToggle';
-=======
->>>>>>> origin/main
 
 // ── Mock notifications ────────────────────────────────────────
 const notifications = [
@@ -165,11 +163,7 @@ function NotificationPanel({
                   </span>
                 )}
               </div>
-<<<<<<< HEAD
               <button onClick={() => alert('Viewing all items...')} className="text-xs text-green-600 font-medium hover:text-green-700">
-=======
-              <button className="text-xs text-green-600 font-medium hover:text-green-700">
->>>>>>> origin/main
                 Mark all read
               </button>
             </div>
@@ -210,11 +204,7 @@ function NotificationPanel({
 
             {/* Footer */}
             <div className="px-4 py-2.5 border-t border-slate-100 text-center">
-<<<<<<< HEAD
               <button onClick={() => alert('Viewing all notifications...')} className="text-xs text-green-600 font-medium hover:text-green-700">
-=======
-              <button className="text-xs text-green-600 font-medium hover:text-green-700">
->>>>>>> origin/main
                 View all notifications
               </button>
             </div>
@@ -229,13 +219,15 @@ function NotificationPanel({
 function UserDropdown({
   isOpen,
   onClose,
+  session
 }: {
   isOpen: boolean;
   onClose: () => void;
+  session: any;
 }) {
   const menuItems = [
-    { icon: User, label: 'My Profile', href: '#' },
-    { icon: Settings, label: 'Settings', href: '/settings/configuration' },
+    { icon: User, label: 'My Profile', href: session?.user?.role === 'manager' ? '/manager/profile' : '/settings/profile' },
+    { icon: Settings, label: 'Settings', href: session?.user?.role === 'manager' ? '#' : '/settings/configuration' },
     { icon: HelpCircle, label: 'Help & Support', href: '#' },
   ];
 
@@ -253,11 +245,11 @@ function UserDropdown({
           >
             {/* User info */}
             <div className="px-4 py-3 border-b border-slate-100">
-              <p className="text-sm font-semibold text-slate-900">Admin User</p>
-              <p className="text-xs text-slate-500">admin@ecosphere.app</p>
+              <p className="text-sm font-semibold text-slate-900">{session?.user?.name || 'Admin User'}</p>
+              <p className="text-xs text-slate-500">{session?.user?.email || 'admin@ecosphere.app'}</p>
               <span className="inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 bg-green-50 text-green-700 text-[10px] font-semibold rounded-full">
                 <Leaf className="w-2.5 h-2.5" />
-                ESG Administrator
+                {session?.user?.role === 'manager' ? 'Department Manager' : 'ESG Administrator'}
               </span>
             </div>
 
@@ -277,11 +269,7 @@ function UserDropdown({
 
             {/* Logout */}
             <div className="border-t border-slate-100 py-1">
-<<<<<<< HEAD
               <button onClick={() => window.location.href = '/login'} className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
-=======
-              <button className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
->>>>>>> origin/main
                 <LogOut className="w-3.5 h-3.5" />
                 Sign out
               </button>
@@ -298,6 +286,11 @@ export function Navbar() {
   const { isCollapsed, toggleMobile } = useSidebar();
   const [notifOpen, setNotifOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
+  const [session, setSession] = useState<any>(null);
+
+  useEffect(() => {
+    setSession(mockGetSession());
+  }, []);
 
   const unreadCount = notifications.filter((n) => n.unread).length;
 
@@ -324,12 +317,8 @@ export function Navbar() {
         {/* Search */}
         <SearchBox />
 
-<<<<<<< HEAD
         {/* Dark Mode Toggle */}
         <DarkModeToggle />
-
-=======
->>>>>>> origin/main
         {/* Notification Bell */}
         <div className="relative">
           <button
@@ -371,14 +360,14 @@ export function Navbar() {
             className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-slate-50 transition-colors"
           >
             <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
-              AU
+              {session?.user?.initials || 'AU'}
             </div>
             <div className="hidden sm:block text-left">
               <p className="text-xs font-semibold text-slate-900 leading-tight">
-                Admin User
+                {session?.user?.name || 'Admin User'}
               </p>
               <p className="text-[10px] text-slate-500 leading-tight">
-                Administrator
+                {session?.user?.role === 'manager' ? 'Department Manager' : 'Administrator'}
               </p>
             </div>
             <ChevronDown
@@ -391,6 +380,7 @@ export function Navbar() {
           <UserDropdown
             isOpen={userOpen}
             onClose={() => setUserOpen(false)}
+            session={session}
           />
         </div>
       </div>

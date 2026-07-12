@@ -14,6 +14,7 @@ import {
 import { Modal } from '@/components/ui/Modal';
 import { environmentalGoals as initialGoals } from '@/lib/mock-data/environmental';
 import { departmentScores } from '@/lib/mock-data/dashboard';
+import { mockGetSession } from '@/lib/mock-auth';
 import type { EnvironmentalGoal } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -140,10 +141,14 @@ function GoalCard({ goal, onView }: { goal: EnvironmentalGoal; onView: (g: Envir
 
 // ── Page ──────────────────────────────────────────────────────
 export default function EnvironmentalGoalsPage() {
+  const session = mockGetSession();
+  const isManager = session?.user?.role === 'manager';
+  const managerDept = session?.user?.department || '';
+
   const [goals, setGoals]         = useState<EnvironmentalGoal[]>(initialGoals);
   const [search, setSearch]       = useState('');
   const [stateFilter, setStateFilter] = useState('all');
-  const [deptFilter, setDeptFilter]   = useState('all');
+  const [deptFilter, setDeptFilter]   = useState(isManager ? managerDept : 'all');
   const [viewGoal, setViewGoal]   = useState<EnvironmentalGoal | null>(null);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [form, setForm] = useState({ name: '', departmentId: 'd1', category: 'Carbon', targetValue: 0, unit: 'tCO₂e', deadline: '', priority: '1', responsiblePerson: '' });
@@ -162,11 +167,11 @@ export default function EnvironmentalGoalsPage() {
   }, [goals, search, stateFilter, deptFilter]);
 
   const stats = {
-    total:    goals.length,
-    active:   goals.filter((g) => g.state === 'active').length,
-    achieved: goals.filter((g) => g.state === 'achieved').length,
-    missed:   goals.filter((g) => g.state === 'missed').length,
-    overdue:  goals.filter((g) => g.isOverdue).length,
+    total:    filtered.length,
+    active:   filtered.filter((g) => g.state === 'active').length,
+    achieved: filtered.filter((g) => g.state === 'achieved').length,
+    missed:   filtered.filter((g) => g.state === 'missed').length,
+    overdue:  filtered.filter((g) => g.isOverdue).length,
   };
 
   const handleAdd = () => {
@@ -192,7 +197,7 @@ export default function EnvironmentalGoalsPage() {
         responsiblePerson: form.responsiblePerson,
         state: 'draft',
         isOverdue: false,
-        priority: form.priority,
+        priority: form.priority as '0' | '1' | '2',
       };
       setGoals((prev) => [newGoal, ...prev]);
       setAddModalOpen(false);
@@ -259,10 +264,14 @@ export default function EnvironmentalGoalsPage() {
             <option value="achieved">Achieved</option>
             <option value="missed">Missed</option>
           </select>
-          <select value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} className="eco-input w-auto text-sm cursor-pointer">
-            <option value="all">All Departments</option>
-            {depts.map((d) => <option key={d} value={d}>{d}</option>)}
-          </select>
+          {isManager ? (
+            <div className="eco-input w-auto text-sm bg-slate-50 flex items-center">{managerDept}</div>
+          ) : (
+            <select value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} className="eco-input w-auto text-sm cursor-pointer">
+              <option value="all">All Departments</option>
+              {depts.map((d) => <option key={d} value={d}>{d}</option>)}
+            </select>
+          )}
         </div>
       </div>
 
