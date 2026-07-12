@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Social Root Menu -->
+    <menuitem id="menu_esg_soc_root"
+              name="Social"
+              parent="ecosphere_base.menu_esg_root"
+              sequence="30"/>
+
+    <!-- CSR Activities Menu -->
+    <menuitem id="menu_esg_soc_csr"
+              name="CSR Activities"
+              parent="menu_esg_soc_root"
+              action="action_esg_csr_activity"
+              sequence="10"/>
+
+    <!-- Employee Participation Menu -->
+    <menuitem id="menu_esg_soc_participation"
+              name="Employee Participation"
+              parent="menu_esg_soc_root"
+              action="action_esg_employee_participation"
+              sequence="20"/>
+</odoo>
