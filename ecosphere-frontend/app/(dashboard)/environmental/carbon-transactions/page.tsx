@@ -17,7 +17,7 @@ import { Modal }     from '@/components/ui/Modal';
 import { carbonTransactions as initial, emissionFactors } from '@/lib/mock-data/environmental';
 import { departmentScores } from '@/lib/mock-data/dashboard';
 import type { CarbonTransaction } from '@/types';
-import { cn } from '@/lib/utils';
+import { cn, exportToCsv } from '@/lib/utils';
 
 // ── Status badge ──────────────────────────────────────────────
 const statusStyle: Record<string, string> = {
@@ -237,6 +237,23 @@ export default function CarbonTransactionsPage() {
     []
   );
 
+  const handleExportCsv = () => {
+    const headers = ['Reference', 'Date', 'Department', 'Category', 'Emission Factor', 'Quantity', 'Unit', 'CO2 Equivalent (t)', 'Scope', 'Status'];
+    const rows = filtered.map(t => [
+      t.reference,
+      t.date,
+      t.department,
+      t.category,
+      t.emissionFactor,
+      t.quantity,
+      t.unit,
+      t.co2Equivalent,
+      t.scope,
+      t.state
+    ]);
+    exportToCsv('carbon_transactions.csv', headers, rows);
+  };
+
   return (
     <div className="animate-fade-in space-y-5">
       {/* ── Header ──────────────────────────────────────── */}
@@ -248,7 +265,7 @@ export default function CarbonTransactionsPage() {
           <p className="eco-page-subtitle">Log, confirm and track all GHG emission entries.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
+          <button onClick={handleExportCsv} className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
             <Download className="w-3.5 h-3.5" /> Export CSV
           </button>
           <button onClick={() => setLogModalOpen(true)} className="eco-btn-primary text-xs px-3 py-2 gap-1.5">

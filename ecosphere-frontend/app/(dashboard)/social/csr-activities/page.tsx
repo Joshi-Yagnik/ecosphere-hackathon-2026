@@ -17,7 +17,7 @@ import { Modal } from '@/components/ui/Modal';
 import { csrActivities as initial, employeeParticipations } from '@/lib/mock-data/social';
 import { departmentScores } from '@/lib/mock-data/dashboard';
 import type { CsrActivity } from '@/types';
-import { cn } from '@/lib/utils';
+import { cn, exportToCsv } from '@/lib/utils';
 
 // ── Status badge ──────────────────────────────────────────────
 const statusStyle: Record<string, string> = {
@@ -202,6 +202,23 @@ export default function CsrActivitiesPage() {
   const approvedCount = data.filter((d) => d.state === 'approved').length;
   const totalParticipants = data.filter(d => d.state === 'approved').reduce((acc, curr) => acc + curr.participantCount, 0);
 
+  const handleExportCsv = () => {
+    const headers = ['Reference', 'Name', 'Category', 'Date', 'Department', 'Organizer', 'Participants', 'XP Awarded', 'Status', 'Description'];
+    const rows = filtered.map(item => [
+      item.reference,
+      item.name,
+      item.category,
+      item.date,
+      item.department,
+      item.organizer,
+      item.participantCount,
+      item.xpAwarded,
+      item.state,
+      item.description || ''
+    ]);
+    exportToCsv('csr_activities.csv', headers, rows);
+  };
+
   return (
     <div className="animate-fade-in space-y-5">
       {/* ── Header ──────────────────────────────────────── */}
@@ -213,7 +230,7 @@ export default function CsrActivitiesPage() {
           <p className="eco-page-subtitle">Manage corporate social responsibility events and community initiatives.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
+          <button onClick={handleExportCsv} className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
             <Download className="w-3.5 h-3.5" /> Export
           </button>
           <button onClick={() => setCreateModalOpen(true)} className="eco-btn-primary text-xs px-3 py-2 gap-1.5 bg-blue-600 hover:bg-blue-700">
@@ -312,10 +329,18 @@ export default function CsrActivitiesPage() {
             )}
             <div className="pt-2">
                 <p className="text-slate-500 font-medium mb-1">Proof Documentation</p>
-                {viewItem.hasProof ? (
+                 {viewItem.hasProof ? (
                     <div className="flex items-center gap-2 p-3 bg-slate-50 border border-slate-200 rounded-lg">
                         <Upload className="w-4 h-4 text-blue-600" />
-                        <a href="#" className="text-blue-600 font-medium hover:underline">event_photos_and_receipts.zip</a>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            alert("Downloading proof attachments package for: " + viewItem.reference);
+                          }}
+                          className="text-blue-600 font-medium hover:underline bg-transparent border-0 p-0 text-left cursor-pointer"
+                        >
+                          event_photos_and_receipts.zip
+                        </button>
                     </div>
                 ) : (
                     <p className="text-slate-400 italic">No proof uploaded.</p>

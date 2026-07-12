@@ -54,3 +54,20 @@ export function mockGetSession() {
 export function isAuthenticated(): boolean {
   return !!mockGetSession();
 }
+
+export function mockSignUp(email: string, password: string, fullName: string): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 600);
+  });
+}
+
+export function mockResetPassword(email: string): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 600);
+  });
+}
+

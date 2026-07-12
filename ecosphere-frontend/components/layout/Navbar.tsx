@@ -5,7 +5,9 @@
 // EcoSphere – Top Navigation Bar
 // ============================================================
 import { useState, useRef, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { mockSignOut } from '@/lib/mock-auth';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Menu,
@@ -132,11 +134,23 @@ function SearchBox() {
 function NotificationPanel({
   isOpen,
   onClose,
+  notificationsList,
+  setNotificationsList,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  notificationsList: typeof notifications;
+  setNotificationsList: React.Dispatch<React.SetStateAction<typeof notifications>>;
 }) {
-  const unreadCount = notifications.filter((n) => n.unread).length;
+  const unreadCount = notificationsList.filter((n) => n.unread).length;
+
+  const handleMarkAllRead = () => {
+    setNotificationsList((prev) => prev.map((n) => ({ ...n, unread: false })));
+  };
+
+  const handleViewAll = () => {
+    alert("Viewing all notifications:\n" + notificationsList.map(n => `• ${n.title}`).join("\n"));
+  };
 
   return (
     <AnimatePresence>
@@ -162,14 +176,14 @@ function NotificationPanel({
                   </span>
                 )}
               </div>
-              <button className="text-xs text-green-600 font-medium hover:text-green-700">
+              <button onClick={handleMarkAllRead} className="text-xs text-green-600 font-medium hover:text-green-700">
                 Mark all read
               </button>
             </div>
 
             {/* List */}
             <div className="max-h-80 overflow-y-auto">
-              {notifications.map((notif) => (
+              {notificationsList.map((notif) => (
                 <div
                   key={notif.id}
                   className={cn(
@@ -203,7 +217,7 @@ function NotificationPanel({
 
             {/* Footer */}
             <div className="px-4 py-2.5 border-t border-slate-100 text-center">
-              <button className="text-xs text-green-600 font-medium hover:text-green-700">
+              <button onClick={handleViewAll} className="text-xs text-green-600 font-medium hover:text-green-700">
                 View all notifications
               </button>
             </div>
@@ -222,11 +236,18 @@ function UserDropdown({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const router = useRouter();
   const menuItems = [
-    { icon: User, label: 'My Profile', href: '#' },
+    { icon: User, label: 'My Profile', href: '/settings/profile' },
     { icon: Settings, label: 'Settings', href: '/settings/configuration' },
     { icon: HelpCircle, label: 'Help & Support', href: '#' },
   ];
+
+  const handleSignOut = () => {
+    mockSignOut();
+    router.push('/login');
+    onClose();
+  };
 
   return (
     <AnimatePresence>
@@ -252,21 +273,42 @@ function UserDropdown({
 
             {/* Menu */}
             <div className="py-1">
-              {menuItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="flex items-center gap-2.5 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
-                >
-                  <item.icon className="w-3.5 h-3.5 text-slate-400" />
-                  {item.label}
-                </a>
-              ))}
+              {menuItems.map((item) => {
+                if (item.href === '#') {
+                  return (
+                    <button
+                      key={item.label}
+                      onClick={() => {
+                        alert(`"${item.label}" functionality is coming soon.`);
+                        onClose();
+                      }}
+                      className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors text-left"
+                    >
+                      <item.icon className="w-3.5 h-3.5 text-slate-400" />
+                      {item.label}
+                    </button>
+                  );
+                }
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    onClick={onClose}
+                    className="flex items-center gap-2.5 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                  >
+                    <item.icon className="w-3.5 h-3.5 text-slate-400" />
+                    {item.label}
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Logout */}
             <div className="border-t border-slate-100 py-1">
-              <button className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+              <button
+                onClick={handleSignOut}
+                className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors text-left"
+              >
                 <LogOut className="w-3.5 h-3.5" />
                 Sign out
               </button>
@@ -283,8 +325,9 @@ export function Navbar() {
   const { isCollapsed, toggleMobile } = useSidebar();
   const [notifOpen, setNotifOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
+  const [notificationsList, setNotificationsList] = useState(notifications);
 
-  const unreadCount = notifications.filter((n) => n.unread).length;
+  const unreadCount = notificationsList.filter((n) => n.unread).length;
 
   return (
     <header className="sticky top-0 z-30 h-16 bg-white border-b border-slate-200 shadow-sm flex items-center px-4 gap-4">
@@ -337,6 +380,8 @@ export function Navbar() {
           <NotificationPanel
             isOpen={notifOpen}
             onClose={() => setNotifOpen(false)}
+            notificationsList={notificationsList}
+            setNotificationsList={setNotificationsList}
           />
         </div>
 

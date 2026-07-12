@@ -14,7 +14,7 @@ import {
 import { DataTable } from '@/components/ui/DataTable';
 import { employeeParticipations as initial } from '@/lib/mock-data/social';
 import type { EmployeeParticipation } from '@/types';
-import { cn, getInitials } from '@/lib/utils';
+import { cn, getInitials, exportToCsv } from '@/lib/utils';
 
 // ── Status badge ──────────────────────────────────────────────
 const statusStyle: Record<string, string> = {
@@ -159,6 +159,21 @@ export default function EmployeeParticipationPage() {
   const approvedCount = data.filter((d) => d.state === 'approved').length;
   const totalHours = data.filter(d => d.state === 'approved').reduce((acc, curr) => acc + curr.hoursContributed, 0);
 
+  const handleExportCsv = () => {
+    const headers = ['Employee Name', 'Department', 'Activity', 'Date', 'Hours', 'XP Earned', 'Badge Awarded', 'Status'];
+    const rows = filtered.map(item => [
+      item.employeeName,
+      item.department,
+      item.activityName,
+      item.date,
+      item.hoursContributed,
+      item.xpEarned,
+      item.badgeAwarded || '',
+      item.state
+    ]);
+    exportToCsv('employee_participation_log.csv', headers, rows);
+  };
+
   return (
     <div className="animate-fade-in space-y-5">
       {/* ── Header ──────────────────────────────────────── */}
@@ -170,7 +185,7 @@ export default function EmployeeParticipationPage() {
           <p className="eco-page-subtitle">Track individual employee contributions to CSR and sustainability initiatives.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
+          <button onClick={handleExportCsv} className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
             <Download className="w-3.5 h-3.5" /> Export Log
           </button>
         </div>

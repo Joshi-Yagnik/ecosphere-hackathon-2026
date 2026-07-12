@@ -230,7 +230,7 @@
 
   /* ── Input ───────────────────────────────────────────────── */
   .eco-input {
-    @apply w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg placeholder:text-slate-400 transition-all;
+    @apply w-full px-3 py-2 text-sm bg-white text-slate-900 dark:text-slate-100 border border-slate-200 rounded-lg placeholder:text-slate-400 transition-all;
     outline: none;
   }
 

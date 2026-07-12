@@ -22,6 +22,7 @@ import {
 import { cn, getInitials } from '@/lib/utils';
 import { navigationItems, type NavItem } from '@/lib/navigation';
 import { useSidebar } from '@/hooks/useSidebar';
+import { mockSignOut } from '@/lib/mock-auth';
 import type { NavChild } from '@/types';
 
 // ── Tooltip wrapper (shown only when collapsed) ───────────────
@@ -325,6 +326,7 @@ export function Sidebar() {
   const { isCollapsed, isMobileOpen, closeMobile, toggleCollapse } =
     useSidebar();
   const pathname = usePathname();
+  const router = useRouter();
 
   const sidebarWidth = isCollapsed ? 68 : 260;
 
@@ -454,6 +456,7 @@ export function Sidebar() {
 
           {/* User profile */}
           <div
+            onClick={() => router.push('/settings/profile')}
             className={cn(
               'flex items-center gap-3 p-2 rounded-lg',
               'hover:bg-slate-50 cursor-pointer group transition-colors',
@@ -482,7 +485,17 @@ export function Sidebar() {
               )}
             </AnimatePresence>
             {!isCollapsed && (
-              <LogOut className="shrink-0 w-3.5 h-3.5 text-slate-300 group-hover:text-slate-500 transition-colors" />
+              <button
+                title="Sign out"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  mockSignOut();
+                  router.push('/login');
+                }}
+                className="shrink-0 p-1 rounded hover:bg-slate-200 text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <LogOut className="shrink-0 w-3.5 h-3.5" />
+              </button>
             )}
           </div>
         </div>

@@ -192,7 +192,7 @@ export default function EnvironmentalGoalsPage() {
         responsiblePerson: form.responsiblePerson,
         state: 'draft',
         isOverdue: false,
-        priority: form.priority,
+        priority: form.priority as any,
       };
       setGoals((prev) => [newGoal, ...prev]);
       setAddModalOpen(false);

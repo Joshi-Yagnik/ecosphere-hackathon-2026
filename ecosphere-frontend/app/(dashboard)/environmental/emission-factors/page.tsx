@@ -16,7 +16,7 @@ import { DataTable } from '@/components/ui/DataTable';
 import { Modal }     from '@/components/ui/Modal';
 import { emissionFactors as initialData } from '@/lib/mock-data/environmental';
 import type { EmissionFactor } from '@/types';
-import { cn } from '@/lib/utils';
+import { cn, exportToCsv } from '@/lib/utils';
 
 // ── Scope badge ───────────────────────────────────────────────
 const scopeStyle: Record<string, string> = {
@@ -230,6 +230,36 @@ export default function EmissionFactorsPage() {
   const scope3Count = data.filter((e) => e.scope === 'scope3' && e.active).length;
   const activeCount = data.filter((e) => e.active).length;
 
+  const handleExportCsv = () => {
+    const headers = ['Code', 'Name', 'Scope', 'Activity Type', 'Factor Value', 'Factor Unit', 'Activity Unit', 'Source', 'Year', 'Status'];
+    const rows = filtered.map(ef => [
+      ef.code,
+      ef.name,
+      ef.scope,
+      ef.activityType,
+      ef.factorValue,
+      ef.factorUnit,
+      ef.activityUnit,
+      ef.source,
+      ef.year,
+      ef.active ? 'Active' : 'Inactive'
+    ]);
+    exportToCsv('emission_factors.csv', headers, rows);
+  };
+
+  const handleImport = () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.csv,.xlsx';
+    fileInput.onchange = (e: any) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        alert(`Successfully imported data from: ${file.name}\n(Prototype simulation: 5 mock factors parsed and active)`);
+      }
+    };
+    fileInput.click();
+  };
+
   return (
     <div className="animate-fade-in space-y-5">
       {/* ── Header ──────────────────────────────────────── */}
@@ -243,10 +273,10 @@ export default function EmissionFactorsPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
+          <button onClick={handleImport} className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
             <Upload className="w-3.5 h-3.5" /> Import
           </button>
-          <button className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
+          <button onClick={handleExportCsv} className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
             <Download className="w-3.5 h-3.5" /> Export CSV
           </button>
           <button onClick={openCreate} className="eco-btn-primary text-xs px-3 py-2 gap-1.5">
@@ -386,7 +416,7 @@ export default function EmissionFactorsPage() {
               <label className="block text-xs font-semibold text-slate-600 mb-1">Activity Type</label>
               <select
                 value={form.activityType}
-                onChange={(e) => setForm((f) => ({ ...f, activityType: e.target.value }))}
+                onChange={(e) => setForm((f) => ({ ...f, activityType: e.target.value as any }))}
                 className="eco-input cursor-pointer capitalize"
               >
                 {ACTIVITY_TYPES.map((t) => (

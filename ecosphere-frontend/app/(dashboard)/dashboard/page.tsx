@@ -6,7 +6,7 @@
 // ============================================================
 
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, Variants } from 'framer-motion';
 
 import {
   BarChart3,
@@ -186,7 +186,7 @@ export default function DashboardPage() {
       {/* ── 2. KPI Score Cards ──────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {kpiCards.map((card) => {
-          const kpi = currentKpis[card.key];
+          const kpi = currentKpis[card.key as keyof typeof currentKpis];
           return (
             <KpiCard
               key={card.key}

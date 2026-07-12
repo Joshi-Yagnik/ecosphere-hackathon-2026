@@ -275,6 +275,8 @@ export interface Badge {
   active: boolean;
 }
 
+export type RewardState = 'available' | 'limited' | 'exhausted';
+
 export interface Reward {
   id: string;
   name: string;
@@ -284,7 +286,7 @@ export interface Reward {
   totalQuantity?: number;
   remainingQuantity?: number;
   redeemedCount: number;
-  state: RewardState | string;
+  state: RewardState;
   expiryDate?: string;
   isExpired?: boolean;
   category: string;

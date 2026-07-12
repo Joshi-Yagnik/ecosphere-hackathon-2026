@@ -17,7 +17,51 @@ export default function ProfilePage() {
     setSaving(true);
     setTimeout(() => {
       setSaving(false);
+      alert("Profile settings saved successfully!");
     }, 600);
+  };
+
+  const handleUploadPhoto = () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.onchange = (e: any) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          if (event.target?.result) {
+            setProfile(prev => ({
+              ...prev,
+              avatar: event.target!.result as string
+            }));
+            alert("Profile photo updated successfully!");
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    fileInput.click();
+  };
+
+  const handleChangePassword = () => {
+    const currentPass = prompt("Enter current password:");
+    if (currentPass === null) return;
+    if (!currentPass) {
+      alert("Current password is required.");
+      return;
+    }
+    const newPass = prompt("Enter new password:");
+    if (!newPass) {
+      alert("New password cannot be empty.");
+      return;
+    }
+    const confirmPass = prompt("Confirm new password:");
+    if (newPass !== confirmPass) {
+      alert("Passwords do not match!");
+      return;
+    }
+    alert("Password updated successfully!");
   };
 
   return (
@@ -39,12 +83,16 @@ export default function ProfilePage() {
         {/* Avatar Sidebar */}
         <div className="md:col-span-1 space-y-4">
           <div className="eco-card p-6 flex flex-col items-center text-center">
-            <div className="w-24 h-24 rounded-full bg-emerald-100 flex items-center justify-center text-3xl font-bold text-emerald-700 shadow-inner mb-4">
-              {getInitials(profile.name)}
+            <div className="w-24 h-24 rounded-full overflow-hidden bg-emerald-100 flex items-center justify-center text-3xl font-bold text-emerald-700 shadow-inner mb-4">
+              {profile.avatar ? (
+                <img src={profile.avatar} alt="Avatar" className="w-full h-full object-cover" />
+              ) : (
+                getInitials(profile.name)
+              )}
             </div>
             <h3 className="font-bold text-slate-900 text-lg">{profile.name}</h3>
             <p className="text-sm text-slate-500 mb-4">{profile.role}</p>
-            <button className="eco-btn-secondary text-xs w-full justify-center">Upload Photo</button>
+            <button onClick={handleUploadPhoto} className="eco-btn-secondary text-xs w-full justify-center">Upload Photo</button>
           </div>
         </div>
 
@@ -116,7 +164,7 @@ export default function ProfilePage() {
               <Key className="w-5 h-5" /> Security
             </h3>
             <p className="text-sm text-slate-500 mb-4">Manage your password and authentication methods.</p>
-            <button className="eco-btn-secondary text-sm border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300">
+            <button onClick={handleChangePassword} className="eco-btn-secondary text-sm border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300">
               Change Password
             </button>
           </div>

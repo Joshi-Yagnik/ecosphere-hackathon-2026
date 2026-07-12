@@ -76,7 +76,7 @@ const options: ChartOptions<'bar'> = {
       grid: { display: false },
       border: { display: false },
       ticks: {
-        font: { family: 'Inter', size: 12, weight: '500' },
+        font: { family: 'Inter', size: 12, weight: 500 },
         color: '#475569',
       },
     },

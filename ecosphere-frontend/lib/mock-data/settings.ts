@@ -17,12 +17,12 @@ export const initialConfig: EsgConfig = {
 };
 
 export const currentUser = {
-  id: 'usr01',
-  name: 'Sunita Joshi',
-  role: 'ESG Director',
-  department: 'Finance',
-  email: 'sunita.joshi@ecosphere.local',
+  id: 'usr-admin-01',
+  name: 'Admin User',
+  role: 'ESG Administrator',
+  department: 'Administration',
+  email: 'admin@ecosphere.com',
   avatar: '',
   timezone: 'Asia/Kolkata',
-  language: 'English (UK)'
+  language: 'English (US)'
 };

@@ -5,7 +5,7 @@
 // Date range tab filter + period display
 // ============================================================
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
+import { cn, exportToCsv } from '@/lib/utils';
 import { CalendarDays, Download, RefreshCw } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -41,6 +41,20 @@ export function DateRangeFilter({ onPeriodChange }: DateRangeFilterProps) {
   const handleRefresh = () => {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 1000);
+  };
+
+  const handleExport = () => {
+    const headers = ['Metric', 'Value', 'Pillar', 'Period'];
+    const rows = [
+      ['Overall ESG Score', '84.2', 'Consolidated', periodLabels[active]],
+      ['Environmental Score', '85.4', 'Environmental', periodLabels[active]],
+      ['Social Score', '83.1', 'Social', periodLabels[active]],
+      ['Governance Score', '84.0', 'Governance', periodLabels[active]],
+      ['July Carbon Emissions', '1284 tCO2e', 'Environmental', periodLabels[active]],
+      ['July CSR Activities', '47', 'Social', periodLabels[active]],
+      ['Compliance Issues Active', '3', 'Governance', periodLabels[active]],
+    ];
+    exportToCsv(`ecosphere_dashboard_summary_${active}.csv`, headers, rows);
   };
 
   return (
@@ -93,7 +107,7 @@ export function DateRangeFilter({ onPeriodChange }: DateRangeFilterProps) {
         </button>
 
         {/* Export */}
-        <button className="eco-btn-primary text-xs px-3 py-2 gap-1.5">
+        <button onClick={handleExport} className="eco-btn-primary text-xs px-3 py-2 gap-1.5">
           <Download className="w-3.5 h-3.5" />
           Export
         </button>

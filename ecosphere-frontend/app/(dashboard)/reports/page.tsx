@@ -124,14 +124,39 @@ export default function ReportsPage() {
 
   const filtered = useMemo(() => data.filter((r) => {
     const q = search.toLowerCase();
-    const matchSearch = !q || r.name.toLowerCase().includes(q) || r.description.toLowerCase().includes(q);
+    const matchSearch = !q || r.name.toLowerCase().includes(q) || (r.description?.toLowerCase().includes(q) ?? false);
     const matchCat = categoryFilter === 'all' || r.category === categoryFilter;
     return matchSearch && matchCat;
   }), [data, search, categoryFilter]);
 
   const handleDownload = (id: string) => {
-    // Mock download action
-    console.log('Downloading report', id);
+    const report = data.find((r) => r.id === id);
+    if (!report) return;
+
+    const content = [
+      `==============================================`,
+      `       ECOSPHERE ESG PLATFORM REPORT          `,
+      `==============================================`,
+      `Report ID    : ${report.id}`,
+      `Report Name  : ${report.name}`,
+      `Description  : ${report.description}`,
+      `Category     : ${report.category}`,
+      `Format       : ${report.type.toUpperCase()}`,
+      `Generated On : ${new Date(report.createdAt).toLocaleString('en-IN')}`,
+      `Status       : ${report.status.toUpperCase()}`,
+      `==============================================`,
+      `Disclaimer: This is a generated prototype report summary.`,
+    ].join('\n');
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `${report.name.toLowerCase().replace(/\s+/g, '_')}_summary.txt`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const handleBuild = () => {

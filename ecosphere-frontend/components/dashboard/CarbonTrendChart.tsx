@@ -133,7 +133,7 @@ const baseOptions: ChartOptions<'line'> = {
       labels: {
         usePointStyle: true,
         pointStyle: 'circle',
-        font: { family: 'Inter', size: 11, weight: '500' },
+        font: { family: 'Inter', size: 11, weight: 500 },
         color: '#64748b',
         padding: 16,
         boxWidth: 8,
