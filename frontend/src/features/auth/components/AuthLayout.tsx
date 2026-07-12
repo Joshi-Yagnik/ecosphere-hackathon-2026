@@ -1,4 +1,4 @@
-
+import React from 'react';
 
 export function AuthLayout({ children, title, subtitle }: { children: React.ReactNode, title: string, subtitle: string }) {
   return (
