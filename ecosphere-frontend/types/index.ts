@@ -305,7 +305,21 @@ export interface LeaderboardEntry {
 }
 
 // ── Reports ───────────────────────────────────────────────────
-export type ReportFormat = 'pdf' | 'excel' | 'csv';
+export type ReportType = 'pdf' | 'xlsx' | 'csv';
+export type ReportStatus = 'ready' | 'generating' | 'failed';
+
+export interface Report {
+  id: string;
+  name: string;
+  description?: string;
+  category: string;
+  createdAt: string;
+  author: string;
+  type: ReportType | string;
+  status: ReportStatus | string;
+  size?: string;
+  errorMessage?: string;
+}
 
 export interface ReportFilter {
   dateFrom?: string;
@@ -313,7 +327,7 @@ export interface ReportFilter {
   departmentId?: string;
   categoryId?: string;
   employeeId?: string;
-  format: ReportFormat;
+  format: ReportType;
 }
 
 // ── Settings ──────────────────────────────────────────────────
