@@ -12,7 +12,8 @@ import {
 } from 'lucide-react';
 
 import { Modal } from '@/components/ui/Modal';
-import { environmentalGoals as initialGoals, departmentScores } from '@/lib/mock-data/environmental';
+import { environmentalGoals as initialGoals } from '@/lib/mock-data/environmental';
+import { departmentScores } from '@/lib/mock-data/dashboard';
 import type { EnvironmentalGoal } from '@/types';
 import { cn } from '@/lib/utils';
 

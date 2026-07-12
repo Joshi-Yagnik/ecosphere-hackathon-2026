@@ -14,7 +14,8 @@ import {
 
 import { DataTable } from '@/components/ui/DataTable';
 import { Modal }     from '@/components/ui/Modal';
-import { carbonTransactions as initial, emissionFactors, departmentScores } from '@/lib/mock-data/environmental';
+import { carbonTransactions as initial, emissionFactors } from '@/lib/mock-data/environmental';
+import { departmentScores } from '@/lib/mock-data/dashboard';
 import type { CarbonTransaction } from '@/types';
 import { cn } from '@/lib/utils';
 
