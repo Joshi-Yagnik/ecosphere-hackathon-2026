@@ -213,7 +213,7 @@ export default function CsrActivitiesPage() {
           <p className="eco-page-subtitle">Manage corporate social responsibility events and community initiatives.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
+          <button onClick={() => alert('Exporting activities...')} className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
             <Download className="w-3.5 h-3.5" /> Export
           </button>
           <button onClick={() => setCreateModalOpen(true)} className="eco-btn-primary text-xs px-3 py-2 gap-1.5 bg-blue-600 hover:bg-blue-700">

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="demo_goal_001" model="esg.environmental.goal">
+            <field name="name">Reduce paper usage by 50%</field>
+            <field name="department_id" ref="ecosphere_base.esg_dept_ops"/>
+            <field name="deadline">2026-12-31</field>
+            <field name="priority">high</field>
+            <field name="progress">35</field>
+            <field name="state">in_progress</field>
+        </record>
+
+        <record id="demo_goal_002" model="esg.environmental.goal">
+            <field name="name">Transition to LED Lighting</field>
+            <field name="department_id" ref="ecosphere_base.esg_dept_engineering"/>
+            <field name="deadline">2026-06-30</field>
+            <field name="priority">medium</field>
+            <field name="progress">100</field>
+            <field name="state">achieved</field>
+        </record>
+    </data>
+</odoo>

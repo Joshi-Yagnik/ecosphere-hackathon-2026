@@ -9,6 +9,7 @@ import { motion, useInView } from 'framer-motion';
 import { ShieldCheck, BookOpen, ClipboardCheck, ShieldAlert, ArrowUpRight, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { useCountUp } from '@/hooks/useCountUp';
+import { cn } from '@/lib/utils';
 import { policies, audits, complianceIssues, policyAcknowledgements } from '@/lib/mock-data/governance';
 
 // ── Computed stats ────────────────────────────────────────────

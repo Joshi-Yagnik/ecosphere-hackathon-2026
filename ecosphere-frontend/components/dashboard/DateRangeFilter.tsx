@@ -93,7 +93,7 @@ export function DateRangeFilter({ onPeriodChange }: DateRangeFilterProps) {
         </button>
 
         {/* Export */}
-        <button className="eco-btn-primary text-xs px-3 py-2 gap-1.5">
+        <button onClick={() => alert('Exporting dashboard data...')} className="eco-btn-primary text-xs px-3 py-2 gap-1.5">
           <Download className="w-3.5 h-3.5" />
           Export
         </button>

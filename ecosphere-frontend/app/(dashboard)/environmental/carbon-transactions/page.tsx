@@ -248,7 +248,7 @@ export default function CarbonTransactionsPage() {
           <p className="eco-page-subtitle">Log, confirm and track all GHG emission entries.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
+          <button onClick={() => alert('Exporting records...')} className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
             <Download className="w-3.5 h-3.5" /> Export CSV
           </button>
           <button onClick={() => setLogModalOpen(true)} className="eco-btn-primary text-xs px-3 py-2 gap-1.5">

@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_esg_badge_employee,esg.badge.employee,model_esg_badge,ecosphere_base.group_esg_employee,1,0,0,0
+access_esg_badge_manager,esg.badge.manager,model_esg_badge,ecosphere_base.group_esg_manager,1,1,1,1
+
+access_esg_user_badge_employee,esg.user.badge.employee,model_esg_user_badge,ecosphere_base.group_esg_employee,1,0,0,0
+access_esg_user_badge_manager,esg.user.badge.manager,model_esg_user_badge,ecosphere_base.group_esg_manager,1,1,1,1
+
+access_esg_challenge_employee,esg.challenge.employee,model_esg_challenge,ecosphere_base.group_esg_employee,1,0,0,0
+access_esg_challenge_manager,esg.challenge.manager,model_esg_challenge,ecosphere_base.group_esg_manager,1,1,1,1
+
+access_esg_challenge_part_employee,esg.challenge.participation.employee,model_esg_challenge_participation,ecosphere_base.group_esg_employee,1,1,1,0
+access_esg_challenge_part_manager,esg.challenge.participation.manager,model_esg_challenge_participation,ecosphere_base.group_esg_manager,1,1,1,1
