@@ -60,7 +60,7 @@ export function LoginForm({ onSubmit, onOAuthLogin, onNavigate }: {
       animate={shake ? { x: [-10, 10, -10, 10, 0] } : {}}
       transition={{ duration: 0.4 }}
     >
-      <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4" autoComplete="off">
         
         {serverError && (
           <div className="p-3 text-sm text-red-600 bg-red-50 rounded-md border border-red-200" aria-live="assertive">
@@ -73,6 +73,8 @@ export function LoginForm({ onSubmit, onOAuthLogin, onNavigate }: {
           <Input
             id="email"
             type="email"
+            placeholder="Enter your email address"
+            autoComplete="off"
             {...register("email")}
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? "email-error" : undefined}
@@ -88,6 +90,8 @@ export function LoginForm({ onSubmit, onOAuthLogin, onNavigate }: {
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
+              placeholder="Enter your password"
+              autoComplete="new-password"
               {...register("password")}
               aria-invalid={!!errors.password}
               aria-describedby={errors.password ? "password-error" : undefined}
