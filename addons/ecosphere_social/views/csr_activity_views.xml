@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_esg_csr_activity_tree" model="ir.ui.view">
+        <field name="name">esg.csr.activity.tree</field>
+        <field name="model">esg.csr.activity</field>
+        <field name="arch" type="xml">
+            <tree string="CSR Activities">
+                <field name="reference"/>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="department_id"/>
+                <field name="category"/>
+                <field name="total_hours" sum="Total Volunteer Hours"/>
+                <field name="state" widget="badge" decoration-info="state == 'pending'" decoration-success="state == 'completed'" decoration-warning="state == 'approved'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_esg_csr_activity_form" model="ir.ui.view">
+        <field name="name">esg.csr.activity.form</field>
+        <field name="model">esg.csr.activity</field>
+        <field name="arch" type="xml">
+            <form string="CSR Activity">
+                <header>
+                    <button name="action_submit" type="object" string="Submit" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_approve" type="object" string="Approve" class="oe_highlight" groups="ecosphere_base.group_esg_manager" invisible="state != 'pending'"/>
+                    <button name="action_complete" type="object" string="Mark Completed" class="oe_highlight" invisible="state != 'approved'"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ('completed', 'cancelled')"/>
+                    <button name="action_draft" type="object" string="Set to Draft" invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,pending,approved,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference" readonly="1"/>
+                        </h1>
+                        <h2>
+                            <field name="name" placeholder="Activity Title"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="organizer_id"/>
+                            <field name="department_id"/>
+                        </group>
+                        <group>
+                            <field name="category"/>
+                            <field name="location"/>
+                            <field name="xp_reward"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Participants" name="participants">
+                            <field name="participation_ids">
+                                <tree editable="bottom">
+                                    <field name="employee_id"/>
+                                    <field name="hours" sum="Total Hours"/>
+                                    <field name="evidence_url" widget="url"/>
+                                    <field name="state"/>
+                                    <button name="action_verify" type="object" string="Verify" icon="fa-check" invisible="state != 'pending'"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Activity details..."/>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Additional notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_esg_csr_activity" model="ir.actions.act_window">
+        <field name="name">CSR Activities</field>
+        <field name="res_model">esg.csr.activity</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

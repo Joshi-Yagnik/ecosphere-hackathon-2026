@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ecosphere.base</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="90"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="ESG Platform" string="ESG Platform" name="ecosphere_base" groups="ecosphere_base.group_esg_manager">
+                    
+                    <h2>Scoring Engine Weights</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Environmental Weight (%)</span>
+                                <div class="text-muted">
+                                    Contribution of E score to total ESG score.
+                                </div>
+                                <div class="content-group mt-2">
+                                    <field name="env_weight" class="text-center w-25"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Social Weight (%)</span>
+                                <div class="text-muted">
+                                    Contribution of S score to total ESG score.
+                                </div>
+                                <div class="content-group mt-2">
+                                    <field name="social_weight" class="text-center w-25"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Governance Weight (%)</span>
+                                <div class="text-muted">
+                                    Contribution of G score to total ESG score.
+                                </div>
+                                <div class="content-group mt-2">
+                                    <field name="gov_weight" class="text-center w-25"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>Modules &amp; Features</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="enable_emission_tracking"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Carbon Tracking</span>
+                                <div class="text-muted">
+                                    Enable Scope 1, 2, 3 carbon transaction tracking.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="require_csr_proof"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Mandatory CSR Proof</span>
+                                <div class="text-muted">
+                                    Require evidence upload for CSR activities before approval.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="auto_badge_award"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Auto Badge Awards</span>
+                                <div class="text-muted">
+                                    Automatically grant badges upon challenge completion.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>Notifications &amp; Alerts</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="notify_by_email"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Email Notifications</span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="notify_in_app"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">In-App Notifications</span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Overdue Alert (Days)</span>
+                                <div class="text-muted">
+                                    Warn this many days before a deadline.
+                                </div>
+                                <div class="content-group mt-2">
+                                    <field name="overdue_alert_days" class="w-25"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>
