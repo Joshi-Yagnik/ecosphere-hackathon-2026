@@ -68,27 +68,29 @@ export function LoginForm({ onSubmit, onOAuthLogin, onNavigate }: {
           </div>
         )}
 
-        <div className="space-y-2">
-          <Label htmlFor="email">Email address</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="email" className="text-[13px] font-semibold text-[#0f172a]">Email address</Label>
           <Input
             id="email"
             type="email"
             {...register("email")}
+            className="h-10 text-[14px] border-slate-200 focus-visible:ring-[#2f655d] focus-visible:border-[#2f655d]"
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? "email-error" : undefined}
           />
           {errors.email && (
-            <p id="email-error" className="text-sm text-red-600" aria-live="polite">{errors.email.message}</p>
+            <p id="email-error" className="text-xs text-red-600" aria-live="polite">{errors.email.message}</p>
           )}
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="password" className="text-[13px] font-semibold text-[#0f172a]">Password</Label>
           <div className="relative">
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
               {...register("password")}
+              className="h-10 text-[14px] border-slate-200 focus-visible:ring-[#2f655d] focus-visible:border-[#2f655d]"
               aria-invalid={!!errors.password}
               aria-describedby={errors.password ? "password-error" : undefined}
             />
@@ -102,26 +104,26 @@ export function LoginForm({ onSubmit, onOAuthLogin, onNavigate }: {
             </button>
           </div>
           {errors.password && (
-            <p id="password-error" className="text-sm text-red-600" aria-live="polite">{errors.password.message}</p>
+            <p id="password-error" className="text-xs text-red-600" aria-live="polite">{errors.password.message}</p>
           )}
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between pt-1 pb-1">
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               id="rememberMe"
               {...register("rememberMe")}
-              className="h-4 w-4 rounded border-slate-300 text-brand-primary focus:ring-brand-primary"
+              className="h-4 w-4 rounded border-slate-300 text-[#2f655d] focus:ring-[#2f655d]"
             />
-            <Label htmlFor="rememberMe" className="font-normal cursor-pointer text-slate-700 dark:text-slate-300">Remember me</Label>
+            <Label htmlFor="rememberMe" className="font-normal text-[13px] text-slate-500 cursor-pointer">Remember me</Label>
           </div>
-          <button type="button" onClick={() => onNavigate('forgot_password')} className="text-sm font-medium text-brand-primary hover:underline">
+          <button type="button" onClick={() => onNavigate('forgot_password')} className="text-[13px] font-medium text-[#2f655d] hover:underline">
             Forgot password?
           </button>
         </div>
 
-        <Button type="submit" className="w-full" isLoading={isSubmitting}>
+        <Button type="submit" className="w-full h-10 bg-[#2f655d] hover:bg-[#25504a] text-white font-medium" isLoading={isSubmitting}>
           Sign in
         </Button>
       </form>
@@ -129,18 +131,28 @@ export function LoginForm({ onSubmit, onOAuthLogin, onNavigate }: {
       <div className="mt-6">
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200"></div>
+            <div className="w-full border-t border-slate-100"></div>
           </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white dark:bg-slate-900 text-slate-500">Or continue with</span>
+          <div className="relative flex justify-center text-[13px]">
+            <span className="px-3 bg-white text-slate-400">Or continue with</span>
           </div>
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-3">
-          <Button variant="outline" type="button" onClick={() => onOAuthLogin('google')}>
-            <Mail className="mr-2 h-4 w-4" /> Google
+          <Button 
+            variant="outline" 
+            type="button" 
+            onClick={() => onOAuthLogin('google')}
+            className="bg-[#8c94a3] hover:bg-[#7b8392] text-white border-0 h-9 font-medium"
+          >
+            <Mail className="mr-2 h-4 w-4 text-white" /> Google
           </Button>
-          <Button variant="outline" type="button" onClick={() => onOAuthLogin('microsoft')}>
+          <Button 
+            variant="outline" 
+            type="button" 
+            onClick={() => onOAuthLogin('microsoft')}
+            className="bg-[#8c94a3] hover:bg-[#7b8392] text-white border-0 h-9 font-medium"
+          >
             <svg className="mr-2 h-4 w-4" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
               <path fill="#f25022" d="M1 1h9v9H1z"/>
               <path fill="#00a4ef" d="M11 1h9v9h-9z"/>
@@ -152,9 +164,9 @@ export function LoginForm({ onSubmit, onOAuthLogin, onNavigate }: {
         </div>
       </div>
 
-      <p className="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
+      <p className="mt-8 text-center text-[13px] text-slate-500">
         Don't have an account?{" "}
-        <button type="button" onClick={() => onNavigate('signup')} className="font-medium text-brand-primary hover:underline">
+        <button type="button" onClick={() => onNavigate('signup')} className="font-medium text-[#2f655d] hover:underline">
           Sign up
         </button>
       </p>

@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_esg_csr_activity_employee,esg.csr.activity.employee,model_esg_csr_activity,ecosphere_base.group_esg_employee,1,1,1,0
-access_esg_csr_activity_head,esg.csr.activity.head,model_esg_csr_activity,ecosphere_base.group_esg_dept_head,1,1,1,1
-access_esg_csr_activity_manager,esg.csr.activity.manager,model_esg_csr_activity,ecosphere_base.group_esg_manager,1,1,1,1
-
-access_esg_employee_participation_employee,esg.employee.participation.employee,model_esg_employee_participation,ecosphere_base.group_esg_employee,1,1,1,0
-access_esg_employee_participation_manager,esg.employee.participation.manager,model_esg_employee_participation,ecosphere_base.group_esg_manager,1,1,1,1

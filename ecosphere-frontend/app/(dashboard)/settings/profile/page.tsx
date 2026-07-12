@@ -8,9 +8,11 @@ import { useState } from 'react';
 import { User, Save, Key, Mail, Building, Globe } from 'lucide-react';
 import { currentUser } from '@/lib/mock-data/settings';
 import { getInitials } from '@/lib/utils';
+import { mockGetSession } from '@/lib/mock-auth';
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState(currentUser);
+  const session = mockGetSession();
+  const [profile, setProfile] = useState(session?.user || currentUser);
   const [saving, setSaving] = useState(false);
 
   const handleSave = () => {

@@ -13,6 +13,7 @@ import { DataTable } from '@/components/ui/DataTable';
 import { policyAcknowledgements as initial, policies } from '@/lib/mock-data/governance';
 import type { PolicyAcknowledgement } from '@/types';
 import { cn, getInitials } from '@/lib/utils';
+import { mockGetSession } from '@/lib/mock-auth';
 
 function buildColumns(): ColumnDef<PolicyAcknowledgement, unknown>[] {
   return [
@@ -68,6 +69,10 @@ function buildColumns(): ColumnDef<PolicyAcknowledgement, unknown>[] {
 }
 
 export default function PolicyAcknowledgementsPage() {
+  const session = mockGetSession();
+  const isEmployee = session?.user?.role === 'employee';
+  const employeeName = session?.user?.name || '';
+
   const [search, setSearch] = useState('');
   const [policyFilter, setPolicyFilter] = useState('all');
   const [overdueFilter, setOverdueFilter] = useState('all');
@@ -77,11 +82,12 @@ export default function PolicyAcknowledgementsPage() {
     const matchSearch = !q || a.employeeName.toLowerCase().includes(q) || a.policyName.toLowerCase().includes(q);
     const matchPolicy = policyFilter === 'all' || a.policyId === policyFilter;
     const matchOverdue = overdueFilter === 'all' || (overdueFilter === 'overdue' ? a.isOverdue : !a.isOverdue);
-    return matchSearch && matchPolicy && matchOverdue;
-  }), [search, policyFilter, overdueFilter]);
+    const matchEmp = !isEmployee || a.employeeName === employeeName;
+    return matchSearch && matchPolicy && matchOverdue && matchEmp;
+  }), [search, policyFilter, overdueFilter, isEmployee, employeeName]);
 
-  const overdueCount = initial.filter((a) => a.isOverdue).length;
-  const onTimeCount = initial.length - overdueCount;
+  const overdueCount = filtered.filter((a) => a.isOverdue).length;
+  const onTimeCount = filtered.length - overdueCount;
 
   const columns = useMemo(() => buildColumns(), []);
 
@@ -99,7 +105,7 @@ export default function PolicyAcknowledgementsPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {[
-          { label: 'Total Records', value: initial.length, color: 'text-slate-700' },
+          { label: 'Total Records', value: filtered.length, color: 'text-slate-700' },
           { label: 'Acknowledged On Time', value: onTimeCount, color: 'text-green-600' },
           { label: 'Overdue', value: overdueCount, color: 'text-red-600' },
         ].map((s, i) => (
@@ -110,10 +116,17 @@ export default function PolicyAcknowledgementsPage() {
         ))}
       </div>
 
-      {overdueCount > 0 && (
+      {overdueCount > 0 && !isEmployee && (
         <div className="flex items-center gap-3 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
           <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
           <span><strong>{overdueCount} acknowledgement{overdueCount > 1 ? 's' : ''}</strong> are overdue. Send reminders to the employees.</span>
+        </div>
+      )}
+
+      {overdueCount > 0 && isEmployee && (
+        <div className="flex items-center gap-3 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
+          <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
+          <span><strong>{overdueCount} acknowledgement{overdueCount > 1 ? 's' : ''}</strong> are overdue. Please acknowledge as soon as possible.</span>
         </div>
       )}
 

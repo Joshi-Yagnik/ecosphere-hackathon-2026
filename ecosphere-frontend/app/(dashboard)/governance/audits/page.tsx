@@ -15,6 +15,7 @@ import {
 import { DataTable } from '@/components/ui/DataTable';
 import { Modal } from '@/components/ui/Modal';
 import { audits as initial } from '@/lib/mock-data/governance';
+import { mockGetSession } from '@/lib/mock-auth';
 import type { Audit, AuditState } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -108,6 +109,10 @@ function buildColumns(onView: (a: Audit) => void): ColumnDef<Audit, unknown>[] {
 }
 
 export default function AuditsPage() {
+  const session = mockGetSession();
+  const isManager = session?.user?.role === 'manager';
+  const managerDept = session?.user?.department || '';
+
   const [data, setData] = useState<Audit[]>(initial);
   const [search, setSearch] = useState('');
   const [stateFilter, setStateFilter] = useState('all');
@@ -120,8 +125,9 @@ export default function AuditsPage() {
     const q = search.toLowerCase();
     const matchSearch = !q || a.name.toLowerCase().includes(q) || a.reference.toLowerCase().includes(q) || a.auditor.toLowerCase().includes(q);
     const matchState = stateFilter === 'all' || a.state === stateFilter;
-    return matchSearch && matchState;
-  }), [data, search, stateFilter]);
+    const matchDept = isManager ? a.department === managerDept : true;
+    return matchSearch && matchState && matchDept;
+  }), [data, search, stateFilter, isManager, managerDept]);
 
   const handleAdd = () => {
     setSaving(true);
@@ -141,7 +147,7 @@ export default function AuditsPage() {
   const columns = useMemo(() => buildColumns(setViewItem), []);
 
   const avgScore = (() => {
-    const scored = data.filter((a) => a.score !== undefined);
+    const scored = filtered.filter((a) => a.score !== undefined);
     return scored.length ? (scored.reduce((s, a) => s + (a.score ?? 0), 0) / scored.length).toFixed(1) : '—';
   })();
 
@@ -154,17 +160,19 @@ export default function AuditsPage() {
           </h1>
           <p className="eco-page-subtitle">Schedule and track internal and external compliance audits.</p>
         </div>
-        <button onClick={() => setAddModalOpen(true)} className="eco-btn-primary bg-violet-600 hover:bg-violet-700 text-xs px-3 py-2 gap-1.5">
-          <Plus className="w-3.5 h-3.5" /> Schedule Audit
-        </button>
+        {!isManager && (
+          <button onClick={() => setAddModalOpen(true)} className="eco-btn-primary bg-violet-600 hover:bg-violet-700 text-xs px-3 py-2 gap-1.5">
+            <Plus className="w-3.5 h-3.5" /> Schedule Audit
+          </button>
+        )}
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Total Audits', value: data.length, color: 'text-slate-700' },
-          { label: 'Scheduled', value: data.filter(a => a.state === 'scheduled').length, color: 'text-blue-600' },
-          { label: 'Completed', value: data.filter(a => a.state === 'completed').length, color: 'text-green-600' },
+          { label: 'Total Audits', value: filtered.length, color: 'text-slate-700' },
+          { label: 'Scheduled', value: filtered.filter(a => a.state === 'scheduled').length, color: 'text-blue-600' },
+          { label: 'Completed', value: filtered.filter(a => a.state === 'completed').length, color: 'text-green-600' },
           { label: 'Avg. Score', value: avgScore, color: 'text-violet-600' },
         ].map((s, i) => (
           <motion.div key={s.label} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }} className="eco-card p-4">

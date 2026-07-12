@@ -20,8 +20,9 @@ import {
   Settings,
 } from 'lucide-react';
 import { cn, getInitials } from '@/lib/utils';
-import { navigationItems, type NavItem } from '@/lib/navigation';
+import { navigationItems, managerNavigationItems, employeeNavigationItems, type NavItem } from '@/lib/navigation';
 import { useSidebar } from '@/hooks/useSidebar';
+import { mockGetSession } from '@/lib/mock-auth';
 import type { NavChild } from '@/types';
 
 // ── Tooltip wrapper (shown only when collapsed) ───────────────
@@ -325,7 +326,17 @@ export function Sidebar() {
   const { isCollapsed, isMobileOpen, closeMobile, toggleCollapse } =
     useSidebar();
   const pathname = usePathname();
+  const [session, setSession] = useState<any>(null);
 
+  useEffect(() => {
+    setSession(mockGetSession());
+  }, []);
+
+  const navItems = session?.user?.role === 'manager' 
+    ? managerNavigationItems 
+    : session?.user?.role === 'employee'
+      ? employeeNavigationItems
+      : navigationItems;
   const sidebarWidth = isCollapsed ? 68 : 260;
 
   return (
@@ -415,7 +426,7 @@ export function Sidebar() {
             isCollapsed ? 'px-2' : 'px-3'
           )}
         >
-          {navigationItems.map((item) => (
+          {navItems.map((item) => (
             <NavParentItem
               key={item.id}
               item={item}
@@ -461,7 +472,7 @@ export function Sidebar() {
             )}
           >
             <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-700 flex items-center justify-center text-white text-xs font-bold shadow-sm">
-              AU
+              {session?.user?.initials || 'AU'}
             </div>
             <AnimatePresence>
               {!isCollapsed && (
@@ -473,10 +484,14 @@ export function Sidebar() {
                   className="flex-1 min-w-0 overflow-hidden"
                 >
                   <p className="text-sm font-semibold text-slate-900 truncate">
-                    Admin User
+                    {session?.user?.name || 'Admin User'}
                   </p>
                   <p className="text-xs text-slate-500 truncate">
-                    ESG Administrator
+                    {session?.user?.role === 'manager' 
+                      ? 'Department Manager' 
+                      : session?.user?.role === 'employee'
+                        ? 'Employee'
+                        : 'ESG Administrator'}
                   </p>
                 </motion.div>
               )}

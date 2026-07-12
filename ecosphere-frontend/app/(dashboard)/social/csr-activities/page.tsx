@@ -16,6 +16,7 @@ import { DataTable } from '@/components/ui/DataTable';
 import { Modal } from '@/components/ui/Modal';
 import { csrActivities as initial, employeeParticipations } from '@/lib/mock-data/social';
 import { departmentScores } from '@/lib/mock-data/dashboard';
+import { mockGetSession } from '@/lib/mock-auth';
 import type { CsrActivity } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -113,10 +114,10 @@ function buildColumns(
         const { state, id } = row.original;
         return (
           <div className="flex items-center gap-1">
-            <button onClick={() => onView(row.original)} title="View Details" className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+            <button onClick={() => onView(row.original)} title="View" className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
               <Eye className="w-3.5 h-3.5" />
             </button>
-            {state === 'submitted' && (
+            {(!mockGetSession()?.user?.role || (mockGetSession()?.user?.role !== 'manager' && mockGetSession()?.user?.role !== 'employee')) && state === 'submitted' && (
               <>
                 <button onClick={() => onApprove(id)} title="Approve" className="p-1.5 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors">
                   <CheckCircle2 className="w-3.5 h-3.5" />
@@ -134,9 +135,16 @@ function buildColumns(
 }
 
 export default function CsrActivitiesPage() {
+  const session = mockGetSession();
+  const isManager = session?.user?.role === 'manager';
+  const isEmployee = session?.user?.role === 'employee';
+  const userDept = session?.user?.department || '';
+  const managerDept = session?.user?.department || 'Corporate';
+  const managerDeptId = departmentScores.find(d => d.name === managerDept)?.id || 'd1';
+
   const [data, setData] = useState<CsrActivity[]>(initial);
   const [search, setSearch] = useState('');
-  const [deptFilter, setDeptFilter] = useState('all');
+  const [deptFilter, setDeptFilter] = useState(isManager || isEmployee ? userDept : 'all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [viewItem, setViewItem] = useState<CsrActivity | null>(null);
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -145,7 +153,7 @@ export default function CsrActivitiesPage() {
     name: '',
     category: 'Community',
     date: new Date().toISOString().split('T')[0],
-    departmentId: 'd1',
+    departmentId: isManager ? managerDeptId : 'd1',
     organizer: '',
     description: '',
   });
@@ -198,9 +206,9 @@ export default function CsrActivitiesPage() {
     []
   );
 
-  const pendingCount = data.filter((d) => d.state === 'submitted').length;
-  const approvedCount = data.filter((d) => d.state === 'approved').length;
-  const totalParticipants = data.filter(d => d.state === 'approved').reduce((acc, curr) => acc + curr.participantCount, 0);
+  const pendingCount = filtered.filter((d) => d.state === 'submitted').length;
+  const approvedCount = filtered.filter((d) => d.state === 'approved').length;
+  const totalParticipants = filtered.filter(d => d.state === 'approved').reduce((acc, curr) => acc + curr.participantCount, 0);
 
   return (
     <div className="animate-fade-in space-y-5">
@@ -216,16 +224,18 @@ export default function CsrActivitiesPage() {
           <button onClick={() => alert('Exporting activities...')} className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
             <Download className="w-3.5 h-3.5" /> Export
           </button>
-          <button onClick={() => setCreateModalOpen(true)} className="eco-btn-primary text-xs px-3 py-2 gap-1.5 bg-blue-600 hover:bg-blue-700">
-            <Plus className="w-3.5 h-3.5" /> Plan Activity
-          </button>
+          {!(isManager || isEmployee) && (
+            <button onClick={() => setCreateModalOpen(true)} className="eco-btn-primary bg-blue-600 hover:bg-blue-700 text-xs px-3 py-2 gap-1.5">
+              <Plus className="w-3.5 h-3.5" /> Draft Activity
+            </button>
+          )}
         </div>
       </div>
 
       {/* ── Stats ────────────────────────────────────────── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Total Activities', value: data.length, color: 'text-slate-700 bg-slate-100' },
+          { label: 'Total Activities', value: filtered.length, color: 'text-slate-700 bg-slate-100' },
           { label: 'Pending Approval', value: pendingCount, color: 'text-orange-700 bg-orange-50' },
           { label: 'Approved Events', value: approvedCount, color: 'text-blue-700 bg-blue-50' },
           { label: 'Total Participants', value: totalParticipants, color: 'text-green-700 bg-green-50' },
@@ -250,10 +260,14 @@ export default function CsrActivitiesPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search activities…" className="eco-input pl-9 text-sm focus:ring-blue-500" />
           </div>
-          <select value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} className="eco-input w-auto text-sm cursor-pointer focus:ring-blue-500">
-            <option value="all">All Departments</option>
-            {depts.map((d) => <option key={d} value={d}>{d}</option>)}
-          </select>
+          {(isManager || isEmployee) ? (
+            <div className="eco-input w-auto text-sm bg-slate-50 flex items-center">{userDept}</div>
+          ) : (
+            <select value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} className="eco-input w-auto text-sm cursor-pointer focus:ring-blue-500">
+              <option value="all">All Departments</option>
+              {depts.map((d) => <option key={d} value={d}>{d}</option>)}
+            </select>
+          )}
           <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="eco-input w-auto text-sm cursor-pointer focus:ring-blue-500">
             <option value="all">All Status</option>
             <option value="draft">Draft</option>
@@ -361,9 +375,13 @@ export default function CsrActivitiesPage() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold text-slate-600 mb-1">Department <span className="text-red-500">*</span></label>
-              <select value={form.departmentId} onChange={(e) => setForm((f) => ({ ...f, departmentId: e.target.value }))} className="eco-input cursor-pointer focus:ring-blue-500">
-                {departmentScores.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
-              </select>
+              {isManager ? (
+                 <div className="eco-input bg-slate-50 flex items-center">{managerDept}</div>
+              ) : (
+                <select value={form.departmentId} onChange={(e) => setForm((f) => ({ ...f, departmentId: e.target.value }))} className="eco-input cursor-pointer focus:ring-blue-500">
+                  {departmentScores.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+                </select>
+              )}
             </div>
             <div>
               <label className="block text-xs font-semibold text-slate-600 mb-1">Organizer <span className="text-red-500">*</span></label>

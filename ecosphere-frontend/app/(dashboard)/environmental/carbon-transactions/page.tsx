@@ -11,6 +11,7 @@ import {
   Plus, Search, Download, TrendingDown, CheckCircle2,
   XCircle, Clock, Eye, Activity,
 } from 'lucide-react';
+import { mockGetSession } from '@/lib/mock-auth';
 
 import { DataTable } from '@/components/ui/DataTable';
 import { Modal }     from '@/components/ui/Modal';
@@ -143,7 +144,7 @@ function buildColumns(
             <button onClick={() => onView(row.original)} title="View" className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
               <Eye className="w-3.5 h-3.5" />
             </button>
-            {state === 'draft' && (
+            {(!mockGetSession()?.user?.role || (mockGetSession()?.user?.role !== 'manager' && mockGetSession()?.user?.role !== 'employee')) && state === 'draft' && (
               <>
                 <button onClick={() => onConfirm(id)} title="Confirm" className="p-1.5 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors">
                   <CheckCircle2 className="w-3.5 h-3.5" />
@@ -162,9 +163,14 @@ function buildColumns(
 
 // ── Page ──────────────────────────────────────────────────────
 export default function CarbonTransactionsPage() {
+  const session = mockGetSession();
+  const isManager = session?.user?.role === 'manager';
+  const isEmployee = session?.user?.role === 'employee';
+  const userDept = session?.user?.department || '';
+
   const [data, setData]           = useState<CarbonTransaction[]>(initial);
   const [search, setSearch]       = useState('');
-  const [deptFilter, setDeptFilter] = useState('all');
+  const [deptFilter, setDeptFilter] = useState(isManager || isEmployee ? userDept : 'all');
   const [scopeFilter, setScopeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [viewItem, setViewItem]   = useState<CarbonTransaction | null>(null);
@@ -251,9 +257,11 @@ export default function CarbonTransactionsPage() {
           <button onClick={() => alert('Exporting records...')} className="eco-btn-secondary text-xs px-3 py-2 gap-1.5">
             <Download className="w-3.5 h-3.5" /> Export CSV
           </button>
-          <button onClick={() => setLogModalOpen(true)} className="eco-btn-primary text-xs px-3 py-2 gap-1.5">
-            <Plus className="w-3.5 h-3.5" /> Log Transaction
-          </button>
+          {!(isManager || isEmployee) && (
+            <button onClick={() => setLogModalOpen(true)} className="eco-btn-primary text-xs px-3 py-2 gap-1.5">
+              <Plus className="w-3.5 h-3.5" /> Log New Activity
+            </button>
+          )}
         </div>
       </div>
 
@@ -305,14 +313,18 @@ export default function CarbonTransactionsPage() {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search transactions…"
-              className="eco-input pl-9 text-sm"
+              placeholder="Search activities…"
+              className="eco-input pl-9 text-sm focus:ring-green-500"
             />
           </div>
-          <select value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} className="eco-input w-auto text-sm cursor-pointer">
-            <option value="all">All Departments</option>
-            {depts.map((d) => <option key={d} value={d}>{d}</option>)}
-          </select>
+          {(isManager || isEmployee) ? (
+            <div className="eco-input w-auto text-sm bg-slate-50 flex items-center">{userDept}</div>
+          ) : (
+            <select value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} className="eco-input w-auto text-sm cursor-pointer focus:ring-green-500">
+              <option value="all">All Departments</option>
+              {depts.map((d) => <option key={d} value={d}>{d}</option>)}
+            </select>
+          )}
           <select value={scopeFilter} onChange={(e) => setScopeFilter(e.target.value)} className="eco-input w-auto text-sm cursor-pointer">
             <option value="all">All Scopes</option>
             <option value="scope1">Scope 1</option>
@@ -388,10 +400,14 @@ export default function CarbonTransactionsPage() {
               <input type="date" value={logForm.date} onChange={(e) => setLogForm((f) => ({ ...f, date: e.target.value }))} className="eco-input" />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">Department <span className="text-red-500">*</span></label>
-              <select value={logForm.departmentId} onChange={(e) => setLogForm((f) => ({ ...f, departmentId: e.target.value }))} className="eco-input cursor-pointer">
-                {departmentScores.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
-              </select>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">Department</label>
+              {(isManager || isEmployee) ? (
+                <div className="eco-input bg-slate-50 flex items-center">{userDept}</div>
+              ) : (
+                <select value={logForm.departmentId} onChange={(e) => setLogForm((f) => ({ ...f, departmentId: e.target.value }))} className="eco-input cursor-pointer focus:ring-green-500">
+                  {departmentScores.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+                </select>
+              )}
             </div>
           </div>
           <div>

@@ -15,7 +15,7 @@ import { type ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/ui/DataTable';
 import { Modal }     from '@/components/ui/Modal';
 import { emissionFactors as initialData } from '@/lib/mock-data/environmental';
-import type { EmissionFactor } from '@/types';
+import type { EmissionFactor, ActivityType } from '@/types';
 import { cn } from '@/lib/utils';
 
 // ── Scope badge ───────────────────────────────────────────────
@@ -386,7 +386,7 @@ export default function EmissionFactorsPage() {
               <label className="block text-xs font-semibold text-slate-600 mb-1">Activity Type</label>
               <select
                 value={form.activityType}
-                onChange={(e) => setForm((f) => ({ ...f, activityType: e.target.value }))}
+                onChange={(e) => setForm((f) => ({ ...f, activityType: e.target.value as ActivityType }))}
                 className="eco-input cursor-pointer capitalize"
               >
                 {ACTIVITY_TYPES.map((t) => (

@@ -10,6 +10,7 @@ import { type ColumnDef } from '@tanstack/react-table';
 import {
   Search, Download, Users, CheckCircle2, XCircle, Clock, Award
 } from 'lucide-react';
+import { mockGetSession } from '@/lib/mock-auth';
 
 import { DataTable } from '@/components/ui/DataTable';
 import { employeeParticipations as initial } from '@/lib/mock-data/social';
@@ -115,14 +116,18 @@ function buildColumns(
         return (
           <div className="flex items-center gap-1">
             {state === 'pending' ? (
-              <>
-                <button onClick={() => onApprove(id)} title="Approve" className="p-1.5 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                </button>
-                <button onClick={() => onReject(id)} title="Reject" className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                  <XCircle className="w-3.5 h-3.5" />
-                </button>
-              </>
+              (!mockGetSession()?.user?.role || (mockGetSession()?.user?.role !== 'manager' && mockGetSession()?.user?.role !== 'employee')) ? (
+                <>
+                  <button onClick={() => onApprove(id)} title="Approve" className="p-1.5 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                  </button>
+                  <button onClick={() => onReject(id)} title="Reject" className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                    <XCircle className="w-3.5 h-3.5" />
+                  </button>
+                </>
+              ) : (
+                <span className="text-slate-300 text-xs px-2">Pending</span>
+              )
             ) : (
                 <span className="text-slate-300 text-xs px-2">Processed</span>
             )}
@@ -134,6 +139,12 @@ function buildColumns(
 }
 
 export default function EmployeeParticipationPage() {
+  const session = mockGetSession();
+  const isManager = session?.user?.role === 'manager';
+  const isEmployee = session?.user?.role === 'employee';
+  const managerDept = session?.user?.department || '';
+  const employeeName = session?.user?.name || '';
+
   const [data, setData] = useState<EmployeeParticipation[]>(initial);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -143,9 +154,11 @@ export default function EmployeeParticipationPage() {
       const q = search.toLowerCase();
       const matchSearch = !q || item.employeeName.toLowerCase().includes(q) || item.activityName.toLowerCase().includes(q);
       const matchStatus = statusFilter === 'all' || item.state === statusFilter;
-      return matchSearch && matchStatus;
+      const matchDept = !isManager || item.department === managerDept;
+      const matchEmp = !isEmployee || item.employeeName === employeeName;
+      return matchSearch && matchStatus && matchDept && matchEmp;
     });
-  }, [data, search, statusFilter]);
+  }, [data, search, statusFilter, isManager, managerDept]);
 
   const handleApprove = (id: string) => setData((prev) => prev.map((r) => r.id === id ? { ...r, state: 'approved' } : r));
   const handleReject = (id: string) => setData((prev) => prev.map((r) => r.id === id ? { ...r, state: 'rejected' } : r));
@@ -155,9 +168,9 @@ export default function EmployeeParticipationPage() {
     []
   );
 
-  const pendingCount = data.filter((d) => d.state === 'pending').length;
-  const approvedCount = data.filter((d) => d.state === 'approved').length;
-  const totalHours = data.filter(d => d.state === 'approved').reduce((acc, curr) => acc + curr.hoursContributed, 0);
+  const pendingCount = filtered.filter((d) => d.state === 'pending').length;
+  const approvedCount = filtered.filter((d) => d.state === 'approved').length;
+  const totalHours = filtered.filter(d => d.state === 'approved').reduce((acc, curr) => acc + curr.hoursContributed, 0);
 
   return (
     <div className="animate-fade-in space-y-5">
@@ -179,7 +192,7 @@ export default function EmployeeParticipationPage() {
       {/* ── Stats ────────────────────────────────────────── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Total Records', value: data.length, color: 'text-slate-700 bg-slate-100' },
+          { label: 'Total Records', value: filtered.length, color: 'text-slate-700 bg-slate-100' },
           { label: 'Pending Verification', value: pendingCount, color: 'text-orange-700 bg-orange-50' },
           { label: 'Verified Participations', value: approvedCount, color: 'text-blue-700 bg-blue-50' },
           { label: 'Total Volunteer Hours', value: `${totalHours}h`, color: 'text-green-700 bg-green-50' },

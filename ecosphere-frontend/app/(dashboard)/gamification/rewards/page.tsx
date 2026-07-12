@@ -12,6 +12,7 @@ import { Plus, Search, Gift, Package, BatteryWarning, CheckCircle2, ShoppingBag 
 import { DataTable } from '@/components/ui/DataTable';
 import { Modal } from '@/components/ui/Modal';
 import { rewards as initial } from '@/lib/mock-data/gamification';
+import { mockGetSession } from '@/lib/mock-auth';
 import type { Reward, RewardState } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -86,6 +87,9 @@ function buildColumns(): ColumnDef<Reward, unknown>[] {
 }
 
 export default function RewardsPage() {
+  const session = mockGetSession();
+  const isEmployee = session?.user?.role === 'employee';
+
   const [data, setData] = useState<Reward[]>(initial);
   const [search, setSearch] = useState('');
   const [stateFilter, setStateFilter] = useState('all');
@@ -127,9 +131,11 @@ export default function RewardsPage() {
           </h1>
           <p className="eco-page-subtitle">Manage items, perks, and experiences employees can redeem with their XP.</p>
         </div>
-        <button onClick={() => setCreateModalOpen(true)} className="eco-btn-primary bg-orange-500 hover:bg-orange-600 text-xs px-3 py-2 gap-1.5">
-          <Plus className="w-3.5 h-3.5" /> Add Reward
-        </button>
+        {!isEmployee && (
+          <button onClick={() => setCreateModalOpen(true)} className="eco-btn-primary bg-orange-500 hover:bg-orange-600 text-xs px-3 py-2 gap-1.5">
+            <Plus className="w-3.5 h-3.5" /> Add Reward
+          </button>
+        )}
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

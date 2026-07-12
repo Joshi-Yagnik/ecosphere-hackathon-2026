@@ -275,16 +275,18 @@ export interface Badge {
   active: boolean;
 }
 
+export type RewardState = 'available' | 'limited' | 'exhausted';
+
 export interface Reward {
   id: string;
   name: string;
   description: string;
   xpCost: number;
   isUnlimited: boolean;
-  totalQuantity: number;
-  remainingQuantity: number;
+  totalQuantity?: number;
+  remainingQuantity?: number;
   redeemedCount: number;
-  state: 'available' | 'limited' | 'exhausted';
+  state: RewardState;
   expiryDate?: string;
   isExpired: boolean;
   category: string;

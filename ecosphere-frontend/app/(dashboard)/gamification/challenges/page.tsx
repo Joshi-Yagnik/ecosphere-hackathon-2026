@@ -12,6 +12,7 @@ import { Plus, Search, Zap, CheckCircle2, Clock, Users, Award, Play } from 'luci
 import { DataTable } from '@/components/ui/DataTable';
 import { Modal } from '@/components/ui/Modal';
 import { challenges as initial } from '@/lib/mock-data/gamification';
+import { mockGetSession } from '@/lib/mock-auth';
 import type { Challenge, ChallengeState } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -98,6 +99,9 @@ function buildColumns(onView: (c: Challenge) => void): ColumnDef<Challenge, unkn
 }
 
 export default function ChallengesPage() {
+  const session = mockGetSession();
+  const isEmployee = session?.user?.role === 'employee';
+
   const [data, setData] = useState<Challenge[]>(initial);
   const [search, setSearch] = useState('');
   const [stateFilter, setStateFilter] = useState('all');
@@ -149,9 +153,11 @@ export default function ChallengesPage() {
           </h1>
           <p className="eco-page-subtitle">Engage employees with gamified sustainability targets and XP rewards.</p>
         </div>
-        <button onClick={() => setCreateModalOpen(true)} className="eco-btn-primary bg-orange-500 hover:bg-orange-600 text-xs px-3 py-2 gap-1.5">
-          <Plus className="w-3.5 h-3.5" /> Create Challenge
-        </button>
+        {!isEmployee && (
+          <button onClick={() => setCreateModalOpen(true)} className="eco-btn-primary bg-orange-500 hover:bg-orange-600 text-xs px-3 py-2 gap-1.5">
+            <Plus className="w-3.5 h-3.5" /> Create Challenge
+          </button>
+        )}
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

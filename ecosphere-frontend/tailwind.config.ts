@@ -11,10 +11,28 @@ const config: Config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+    './features/**/*.{ts,tsx}',
   ],
   theme: {
     extend: {
       colors: {
+        brand: {
+          primary: '#2E7D5B',
+          accent: '#1E3A5F',
+        },
+        eco: {
+          green: '#16a34a',
+          'green-dark': '#15803d',
+          'green-light': '#f0fdf4',
+          blue: '#2563eb',
+          'blue-light': '#eff6ff',
+          violet: '#7c3aed',
+          'violet-light': '#f5f3ff',
+          orange: '#ea580c',
+          'orange-light': '#fff7ed',
+          teal: '#0d9488',
+          'teal-light': '#f0fdfa',
+        },
         // Shadcn CSS variable tokens
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -134,6 +152,12 @@ const config: Config = {
       transitionTimingFunction: {
         spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
         smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      },
+
+      boxShadow: {
+        card: '0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06)',
+        'card-hover': '0 4px 12px 0 rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06)',
+        eco: '0 8px 30px rgb(22 163 74 / 0.15)',
       },
     },
   },
