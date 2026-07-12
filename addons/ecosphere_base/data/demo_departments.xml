@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Demo Users -->
+        <record id="user_esg_admin" model="res.users">
+            <field name="name">Priya Sharma</field>
+            <field name="login">priya@ecosphere.demo</field>
+            <field name="groups_id" eval="[(4, ref('ecosphere_base.group_esg_manager'))]"/>
+        </record>
+        <record id="user_esg_head1" model="res.users">
+            <field name="name">Rahul Mehta</field>
+            <field name="login">rahul@ecosphere.demo</field>
+            <field name="groups_id" eval="[(4, ref('ecosphere_base.group_esg_dept_head'))]"/>
+        </record>
+
+        <!-- Demo Departments -->
+        <record id="esg_dept_engineering" model="esg.department">
+            <field name="name">Engineering</field>
+            <field name="manager_id" ref="user_esg_admin"/>
+            <field name="employee_count">120</field>
+            <field name="carbon_target">500.0</field>
+            <field name="env_score">85.0</field>
+            <field name="social_score">92.0</field>
+            <field name="gov_score">88.0</field>
+        </record>
+
+        <record id="esg_dept_hr" model="esg.department">
+            <field name="name">Human Resources</field>
+            <field name="manager_id" ref="user_esg_head1"/>
+            <field name="employee_count">45</field>
+            <field name="carbon_target">150.0</field>
+            <field name="env_score">70.0</field>
+            <field name="social_score">95.0</field>
+            <field name="gov_score">90.0</field>
+        </record>
+        
+        <record id="esg_dept_ops" model="esg.department">
+            <field name="name">Operations</field>
+            <field name="manager_id" ref="user_esg_head1"/>
+            <field name="employee_count">300</field>
+            <field name="carbon_target">1200.0</field>
+            <field name="env_score">60.0</field>
+            <field name="social_score">75.0</field>
+            <field name="gov_score">80.0</field>
+        </record>
+    </data>
+</odoo>

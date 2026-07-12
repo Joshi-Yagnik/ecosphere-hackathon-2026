@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_esg_emission_factor_employee,esg.emission.factor.employee,model_esg_emission_factor,ecosphere_base.group_esg_employee,1,0,0,0
+access_esg_emission_factor_manager,esg.emission.factor.manager,model_esg_emission_factor,ecosphere_base.group_esg_manager,1,1,1,1
+
+access_esg_carbon_transaction_employee,esg.carbon.transaction.employee,model_esg_carbon_transaction,ecosphere_base.group_esg_employee,1,0,0,0
+access_esg_carbon_transaction_head,esg.carbon.transaction.head,model_esg_carbon_transaction,ecosphere_base.group_esg_dept_head,1,1,1,0
+access_esg_carbon_transaction_manager,esg.carbon.transaction.manager,model_esg_carbon_transaction,ecosphere_base.group_esg_manager,1,1,1,1
+
+access_esg_environmental_goal_employee,esg.environmental.goal.employee,model_esg_environmental_goal,ecosphere_base.group_esg_employee,1,0,0,0
+access_esg_environmental_goal_head,esg.environmental.goal.head,model_esg_environmental_goal,ecosphere_base.group_esg_dept_head,1,1,1,0
+access_esg_environmental_goal_manager,esg.environmental.goal.manager,model_esg_environmental_goal,ecosphere_base.group_esg_manager,1,1,1,1

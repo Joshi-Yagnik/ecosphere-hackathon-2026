@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Environmental Root Menu -->
+    <menuitem id="menu_esg_env_root"
+              name="Environmental"
+              parent="ecosphere_base.menu_esg_root"
+              sequence="20"/>
+
+    <!-- Carbon Transactions Menu -->
+    <menuitem id="menu_esg_env_carbon"
+              name="Carbon Transactions"
+              parent="menu_esg_env_root"
+              action="action_esg_carbon_transaction"
+              sequence="10"/>
+
+    <!-- Environmental Goals Menu -->
+    <menuitem id="menu_esg_env_goals"
+              name="Environmental Goals"
+              parent="menu_esg_env_root"
+              action="action_esg_environmental_goal"
+              sequence="20"/>
+
+    <!-- Configuration Menu -->
+    <menuitem id="menu_esg_env_config"
+              name="Environmental"
+              parent="ecosphere_base.menu_esg_settings_root"
+              sequence="20"/>
+              
+    <menuitem id="menu_esg_env_factors"
+              name="Emission Factors"
+              parent="menu_esg_env_config"
+              action="action_esg_emission_factor"
+              sequence="10"/>
+</odoo>
