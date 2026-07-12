@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Governance Root Menu -->
+    <menuitem id="menu_esg_gov_root"
+              name="Governance"
+              parent="ecosphere_base.menu_esg_root"
+              sequence="40"/>
+
+    <!-- Policies Menu -->
+    <menuitem id="menu_esg_gov_policies"
+              name="Policies"
+              parent="menu_esg_gov_root"
+              action="action_esg_policy"
+              sequence="10"/>
+
+    <!-- Audits Menu -->
+    <menuitem id="menu_esg_gov_audits"
+              name="Audits"
+              parent="menu_esg_gov_root"
+              action="action_esg_audit"
+              sequence="20"/>
+
+    <!-- Compliance Issues Menu -->
+    <menuitem id="menu_esg_gov_issues"
+              name="Compliance Issues"
+              parent="menu_esg_gov_root"
+              action="action_esg_compliance_issue"
+              sequence="30"/>
+</odoo>

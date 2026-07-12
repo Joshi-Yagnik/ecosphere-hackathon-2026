@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="menu_esg_root"
+              name="EcoSphere ESG"
+              web_icon="ecosphere_base,static/description/icon.png"
+              groups="group_esg_employee"
+              sequence="10"/>
+
+    <!-- Settings & Configuration Menu -->
+    <menuitem id="menu_esg_settings_root"
+              name="Settings"
+              parent="menu_esg_root"
+              sequence="100"/>
+
+    <!-- Departments -->
+    <record id="action_esg_department" model="ir.actions.act_window">
+        <field name="name">Departments</field>
+        <field name="res_model">esg.department</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new ESG Department
+            </p>
+            <p>
+                Track carbon targets, goals, and ESG scores by department.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_esg_departments"
+              name="Departments"
+              parent="menu_esg_settings_root"
+              action="action_esg_department"
+              sequence="10"/>
+              
+    <!-- Configuration -->
+    <record id="action_esg_config_settings" model="ir.actions.act_window">
+        <field name="name">ESG Configuration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="base.res_config_settings_view_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'ecosphere_base', 'bin_size': False}</field>
+    </record>
+
+    <menuitem id="menu_esg_config_settings"
+              name="Configuration"
+              parent="menu_esg_settings_root"
+              sequence="0"
+              action="action_esg_config_settings"
+              groups="group_esg_manager"/>
+</odoo>

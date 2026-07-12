@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Gamification Root Menu -->
+    <menuitem id="menu_esg_gam_root"
+              name="Gamification"
+              parent="ecosphere_base.menu_esg_root"
+              sequence="50"/>
+
+    <!-- Challenges Menu -->
+    <menuitem id="menu_esg_gam_challenges"
+              name="Challenges"
+              parent="menu_esg_gam_root"
+              action="action_esg_challenge"
+              sequence="10"/>
+
+    <!-- Configuration Menu -->
+    <menuitem id="menu_esg_gam_config"
+              name="Gamification"
+              parent="ecosphere_base.menu_esg_settings_root"
+              sequence="30"/>
+              
+    <menuitem id="menu_esg_gam_badges"
+              name="Badges"
+              parent="menu_esg_gam_config"
+              action="action_esg_badge"
+              sequence="10"/>
+</odoo>
