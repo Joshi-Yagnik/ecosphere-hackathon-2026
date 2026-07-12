@@ -66,7 +66,7 @@ export default function GlobalSettingsPage() {
         {/* Scoring Engine */}
         <div className="eco-card p-6">
           <h3 className="eco-section-title mb-4 flex items-center gap-2">
-            <Slider className="w-5 h-5 text-emerald-600" /> Scoring Engine Weights
+            <Sliders className="w-5 h-5 text-emerald-600" /> Scoring Engine Weights
           </h3>
           <p className="text-sm text-slate-500 mb-6 leading-relaxed">
             Determine how much each pillar contributes to the overall Corporate ESG Score. <strong>Must total 100%.</strong>
