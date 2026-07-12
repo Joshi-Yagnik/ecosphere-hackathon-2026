@@ -22,6 +22,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useSidebar } from '@/hooks/useSidebar';
 import { Breadcrumb } from './Breadcrumb';
+import { DarkModeToggle } from './DarkModeToggle';
 
 // ── Mock notifications ────────────────────────────────────────
 const notifications = [
@@ -307,6 +308,9 @@ export function Navbar() {
       <div className="flex items-center gap-1 shrink-0">
         {/* Search */}
         <SearchBox />
+
+        {/* Dark Mode Toggle */}
+        <DarkModeToggle />
 
         {/* Notification Bell */}
         <div className="relative">

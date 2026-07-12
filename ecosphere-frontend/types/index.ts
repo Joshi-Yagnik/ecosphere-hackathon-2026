@@ -281,12 +281,12 @@ export interface Reward {
   description: string;
   xpCost: number;
   isUnlimited: boolean;
-  totalQuantity: number;
-  remainingQuantity: number;
+  totalQuantity?: number;
+  remainingQuantity?: number;
   redeemedCount: number;
-  state: 'available' | 'limited' | 'exhausted';
+  state: RewardState | string;
   expiryDate?: string;
-  isExpired: boolean;
+  isExpired?: boolean;
   category: string;
   image?: string;
 }

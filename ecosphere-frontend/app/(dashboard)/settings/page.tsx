@@ -6,7 +6,7 @@
 // ============================================================
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Settings, Save, Slider, Bell, ShieldCheck, Activity } from 'lucide-react';
+import { Settings, Save, Sliders, Bell, ShieldCheck, Activity } from 'lucide-react';
 import { initialConfig } from '@/lib/mock-data/settings';
 import type { EsgConfig } from '@/types';
 import { cn } from '@/lib/utils';

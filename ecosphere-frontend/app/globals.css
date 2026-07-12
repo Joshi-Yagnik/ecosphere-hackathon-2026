@@ -11,12 +11,34 @@
   --navbar-height: 4rem;
   --sidebar-width: 260px;
   --sidebar-collapsed: 68px;
+
+  /* Light mode surface colors */
+  --bg-body:    #f8fafc;
+  --bg-card:    #ffffff;
+  --bg-sidebar: #ffffff;
+  --bg-navbar:  #ffffffd9;
+  --border:     #e2e8f0;
+  --text-primary:   #0f172a;
+  --text-secondary: #475569;
+  --text-muted:     #94a3b8;
+}
+
+/* Dark mode overrides */
+.dark {
+  --bg-body:    #0f172a;
+  --bg-card:    #1e293b;
+  --bg-sidebar: #1e293b;
+  --bg-navbar:  #1e293bd9;
+  --border:     #334155;
+  --text-primary:   #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted:     #64748b;
 }
 
 /* ── Base ──────────────────────────────────────────────────── */
 @layer base {
   * {
-    border-color: #e2e8f0;
+    border-color: var(--border);
     box-sizing: border-box;
   }
 
@@ -28,10 +50,11 @@
   }
 
   body {
-    background-color: #f8fafc;
-    color: #0f172a;
+    background-color: var(--bg-body);
+    color: var(--text-primary);
     line-height: 1.5;
     font-feature-settings: 'rlig' 1, 'calt' 1;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -49,6 +72,7 @@
     box-shadow: 0 0 0 2px #fff, 0 0 0 4px #16a34a;
   }
 }
+
 
 /* ── Components ────────────────────────────────────────────── */
 @layer components {
